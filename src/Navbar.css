@@ -1,0 +1,26 @@
+.navbar-nav .nav-item .nav-link {
+  color: rgb(255, 255, 255);
+  position: relative;
+  padding-bottom: 5px; /* Adjust as needed */
+  text-decoration: none;
+  /* give more space between them */
+  margin-right: 20px;
+}
+
+.navbar-nav .nav-item .nav-link::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  background-color: white;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transition: width 0.3s ease;
+}
+
+.navbar-nav .nav-item .nav-link:hover::after {
+  width: 100%;
+  left: 0;
+  transform: translateX(0);
+}

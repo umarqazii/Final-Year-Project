@@ -1,0 +1,35 @@
+.ContactContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 0;
+  }
+  
+  .CardContact {
+    background-color: #454d55; /* Darker grey background color for cards */
+    margin: 20px;
+    max-width: 800px; /* Set maximum width for the cards */
+    min-width: 50%;
+  }
+  
+  .CardHeaderContact {
+    background-color: #343a40; /* Dark grey background color for the card header */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.125); /* White bottom border */
+  }
+  
+  .nav-link {
+    color: white; /* White text color for navigation links */
+  }
+  
+  .CardBodyContact {
+    padding: 20px;
+  }
+
+  .CardTextContact, .card-title {
+    color: white;
+  }
+
+  .CardImgContact {
+    width: 50px;
+  }
+
