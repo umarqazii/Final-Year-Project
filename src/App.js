@@ -8,6 +8,7 @@ import PatientConsentForm from './components/PatientConsentForm';
 import ClosedEndedQuestions from './components/ClosedEndedQuestions';
 import PsychologistHome from './components/PsychologistHome';
 import PsychologistRegisterPatient from './components/PsychologistRegisterPatient';
+import PsychologistPatientProfiles from './components/PsychologistPatientProfiles';
 
 
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/psychologisthome" element={<PsychologistHome />} />
           <Route path="/psychologistregisterpatient" element={<PsychologistRegisterPatient />} />
+          <Route path="/psychologistpatientprofiles" element={<PsychologistPatientProfiles />} />
         </Routes>
       </BrowserRouter>
     );

@@ -39,31 +39,33 @@ function setPassword() {
 // ----------------------------------Register route (used for signup purpose)----------------------------------
 app.post('/register-patient', (req, res) => {
   const { firstName, lastName, email, phoneNumber } = req.body;
-  const username = setUsername(firstName, lastName);
-  const password = setPassword();
+  // const username = setUsername(firstName, lastName);
+  // const password = setPassword();
+  const username = firstName.toLowerCase();
+  const password = firstName.toLowerCase();
   const newUser = new Patient({ firstName, lastName, email, phoneNumber, username, password });
   newUser.save()
     .then(() => {
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'umarqazii983@gmail.com',
-          pass: 'lgjp cxmz eqgf fgnk'
-        }
-      });
-      const mailOptions = {
-        from: 'umarqazii983@gmail.com',
-        to: email,
-        subject: 'Credentials for your account',
-        text: `Your username is "${username}" and password is "${password}"`
-      };
-      transporter.sendMail(mailOptions, (err, info) => {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log('Email sent: ' + info.response);
-        }
-      });
+      // const transporter = nodemailer.createTransport({
+      //   service: 'gmail',
+      //   auth: {
+      //     user: 'umarqazii983@gmail.com',
+      //     pass: 'lgjp cxmz eqgf fgnk'
+      //   }
+      // });
+      // const mailOptions = {
+      //   from: 'umarqazii983@gmail.com',
+      //   to: email,
+      //   subject: 'Credentials for your account',
+      //   text: `Your username is "${username}" and password is "${password}"`
+      // };
+      // transporter.sendMail(mailOptions, (err, info) => {
+      //   if (err) {
+      //     console.log(err);
+      //   } else {
+      //     console.log('Email sent: ' + info.response);
+      //   }
+      // });
       res.status(200).json({ message: 'Patient added successfully' });
     })
     .catch(err => {
