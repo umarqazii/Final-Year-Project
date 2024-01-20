@@ -31,7 +31,7 @@ function Login() {
 
         if (res.data.isPsychologist) {
           // Admin login
-          window.location.href = '/patienthome';
+          window.location.href = '/psychologisthome';
         } else {
           // User login
           localStorage.setItem('token', res.data.token);

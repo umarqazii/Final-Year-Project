@@ -81,8 +81,8 @@ app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
   // Check if it's the psychologist
-  if (username === 'user' && password === 'user') {
-    return res.status(200).json({ isPsychologist: true, message: 'User login successful' });
+  if (username === 'psy' && password === 'psy') {
+    return res.status(200).json({ isPsychologist: true, message: 'Psy login successful' });
   }
 
   // Check the database for a matching user
