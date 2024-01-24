@@ -1,0 +1,43 @@
+[
+    {
+      "question": "Can you describe a recent situation that made you feel extremely worried or stressed? What were your thoughts and feelings at that moment?",
+      "timeInSeconds": 6
+    },
+    {
+      "question": "Can you share an experience where social situations triggered your emotional distress?",
+      "timeInSeconds": 4
+    },
+    {
+      "question": "How does social pressure affect your relationships with friends and family?",
+      "timeInSeconds": 4
+    },
+    {
+      "question": "Have you ever felt overwhelmed by the pressure to excel at work or in your studies?",
+      "timeInSeconds": 5
+    },
+    {
+      "question": "What physical symptoms do you experience when you face performance-related stress?",
+      "timeInSeconds": 3
+    },
+    {
+      "question": "Have you ever been overly concerned about your health or experienced distress related to health issues?",
+      "timeInSeconds": 5
+    },
+    {
+      "question": "Did you fall prey to Coronavirus? Can you describe any specific situations or challenges you've faced during this time?",
+      "timeInSeconds": 9
+    },
+    {
+      "question": "Are there specific aspects of your future or career that cause you significant worry or stress?",
+      "timeInSeconds": 4
+    },
+    {
+      "question": "Share any specific fears or triggers that aggravate your emotional distress.",
+      "timeInSeconds": 4
+    },
+    {
+      "question": "What strategies or techniques have you found helpful in managing intense emotional reactions? Which ones do you find less effective, and why?",
+      "timeInSeconds": 6
+    }
+  ]
+  
