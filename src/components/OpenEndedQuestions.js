@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import questions from './Questions.json';
 import PatientNavbar from './PatientNavbar';
 
@@ -8,22 +8,71 @@ function OpenEndedQuestions() {
     const [isTimerActive, setIsTimerActive] = useState(true);
     const [isLastQuestion, setIsLastQuestion] = useState(false);
 
+    const videoRef = useRef(null);
+    const mediaRecorderRef = useRef(null);
+    const recordedChunksRef = useRef([]);
+
+    const stopRecording = () => {
+        mediaRecorderRef.current?.stop();
+
+        const blob = new Blob(recordedChunksRef.current, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        a.style = 'display: none';
+        a.href = url;
+        a.download = 'test.webm';
+        a.click();
+
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    };
+
     useEffect(() => {
-        // Update the timer every second
+        const startRecording = () => {
+            navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                .then((stream) => {
+                    videoRef.current.srcObject = stream;
+                    mediaRecorderRef.current = new MediaRecorder(stream);
+
+                    mediaRecorderRef.current.ondataavailable = (event) => {
+                        if (event.data.size > 0) {
+                            recordedChunksRef.current.push(event.data);
+                        }
+                    };
+
+                    mediaRecorderRef.current.onstop = () => {
+                        stopRecording();
+                    };
+
+                    mediaRecorderRef.current.start(1000);
+                })
+                .catch((error) => console.error('Error accessing camera and microphone:', error));
+        };
+
+        // Start recording when the component is mounted
+        startRecording();
+
         const timer = setInterval(() => {
             if (isTimerActive) {
-                setRemainingTime(prevTime => prevTime - 1);
+                setRemainingTime((prevTime) => prevTime - 1);
             }
         }, 1000);
 
-        // Clear the timer when the component is unmounted or when the timer reaches 0
-        return () => clearInterval(timer);
+        return () => {
+            clearInterval(timer);
+            //mediaRecorderRef.current?.stop();
+            //if last question's timer is up, then stop recording
+            if (isLastQuestion) {
+                mediaRecorderRef.current?.stop();
+            }
+        };
     }, [isTimerActive]);
 
-    // Additional logic to handle switching questions when the timer reaches 0
     useEffect(() => {
         if (remainingTime === 0 && currentQuestionIndex < questions.length - 1) {
-            setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+            setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
             setRemainingTime(questions[currentQuestionIndex + 1].timeInSeconds);
         } else if (remainingTime === 0 && currentQuestionIndex === questions.length - 1) {
             setIsLastQuestion(true);
@@ -38,16 +87,21 @@ function OpenEndedQuestions() {
             <h1 style={{ fontFamily: 'Audiowide, sans-serif', color: 'white', marginTop: '50px' }}>Open-Ended Question</h1>
 
             <div>
-                <h2 style={{ fontFamily: ' sans-serif', color: 'white', marginTop: '50px' }}>Question {currentQuestionIndex + 1} of 10</h2>
-                <p style={{color:'white'}}>{questions[currentQuestionIndex].question}</p>
+                <h2 style={{ fontFamily: ' sans-serif', color: 'white', marginTop: '50px' }}>
+                    Question {currentQuestionIndex + 1} of {questions.length}
+                </h2>
+                <p style={{ color: 'white' }}>{questions[currentQuestionIndex].question}</p>
                 <div>
                     {isLastQuestion ? (
-                        <p style={{color:'white'}}>Time's Up!</p>
+                        <p style={{ color: 'white' }}>Time's Up!</p>
                     ) : (
-                        <p style={{color:'white'}}>Time Remaining: {remainingTime} seconds</p>
+                        <p style={{ color: 'white' }}>Time Remaining: {remainingTime} seconds</p>
                     )}
                 </div>
             </div>
+
+            {/* Video element for displaying the user's camera feed */}
+            <video id='video' width='640' height='480' autoPlay muted ref={videoRef}></video>
         </div>
     );
 }
