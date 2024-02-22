@@ -36,6 +36,7 @@ const PsychologistNavbar = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/psychologistpatientprofiles" style={{ fontFamily: 'Audiowide, sans-serif' }}>Patient Profiles</Link>
             </li>
+            
             <li className="nav-item">
               <Link className="nav-link" to="/" style={{ fontFamily: 'Audiowide, sans-serif', color: 'red' }}>Logout</Link>
             </li>

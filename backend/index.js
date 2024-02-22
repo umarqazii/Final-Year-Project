@@ -5,12 +5,16 @@ const bodyParser = require('body-parser');
 const app = express();
 const { Patient, MedicalRecord } = require('./Models/Database');
 const nodemailer = require('nodemailer');
-
+require("dotenv").config();
 
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect('mongodb://127.0.0.1:27017/FYP', {});
+//mongoose.connect('mongodb://127.0.0.1:27017/FYP', {});
+
+mongoose.connect(process.env.MONG_URI)
+  .then(() => console.log("MongoDB connection established successfully"))
+  .catch((err) => console.log(err));
 
 // ----------------------------------Functions to Set username and password----------------------------------
 

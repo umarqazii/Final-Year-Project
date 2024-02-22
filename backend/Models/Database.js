@@ -12,38 +12,32 @@ let patientSchema = new Schema({
     collection: 'patients' // Explicitly setting the collection name
   });
 
-let medicalRecordSchema = new Schema({
-  patientId: { type: Schema.Types.ObjectId, ref: 'Patient', required: true },
-  GAD7Score: { type: Number, required: true },
-  
-  question1Emotion: { type: String },
-  question1Sentiment: { type: String },
-  question2Emotion: { type: String },
-  question2Sentiment: { type: String },
-  question3Emotion: { type: String },
-  question3Sentiment: { type: String },
-  question4Emotion: { type: String },
-  question4Sentiment: { type: String },
-  question5Emotion: { type: String },
-  question5Sentiment: { type: String },
-  question6Emotion: { type: String },
-  question6Sentiment: { type: String },
-  question7Emotion: { type: String },
-  question7Sentiment: { type: String },
-  question8Emotion: { type: String },
-  question8Sentiment: { type: String },
-  question9Emotion: { type: String },
-  question9Sentiment: { type: String },
-  question10Emotion: { type: String },
-  question10Sentiment: { type: String },
-}, {
-    collection: 'medicalRecords' // Explicitly setting the collection name
+  const questionSchema = new Schema({
+    question: { type: Number, required: true },
+    percentageHappiness: { type: Number },
+    percentageSadness: { type: Number },
+    percentageAnger: { type: Number },
+    percentageFear: { type: Number },
+    percentageNeutral: { type: Number },
+    positiveSentiment: { type: Number },
+    negativeSentiment: { type: Number },
+    avgHeartRate: { type: Number },
+    avgOxygenLevel: { type: Number },
   });
+
+let patientEvaluation = new Schema({
+  patientID: { type: Schema.Types.ObjectId, ref: 'Patient', required: true },
+  GADscore: { type: Number },
+  questions: [questionSchema],
+  hasAnxiety: { type: Boolean},
+}, {
+  collection: 'patientEvaluations'
+});
   
 
   module.exports = {
     Patient: mongoose.model('Patient', patientSchema),
-    MedicalRecord: mongoose.model('MedicalRecord', medicalRecordSchema),
+    PatientEvaluation: mongoose.model('PatientEvaluation', patientEvaluation),
   };
   
 

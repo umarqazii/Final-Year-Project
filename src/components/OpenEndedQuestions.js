@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import questions from './Questions.json';
 import PatientNavbar from './PatientNavbar';
+import HealthMonitor from './HealthMonitor';
 
 function OpenEndedQuestions() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -84,16 +85,16 @@ function OpenEndedQuestions() {
         <div className='App'>
             <PatientNavbar />
 
-            <h1 style={{ fontFamily: 'Audiowide, sans-serif', color: 'white', marginTop: '50px' }}>Open-Ended Question</h1>
-
+            <h1 style={{ fontFamily: 'Audiowide, sans-serif', color: 'white', marginTop: '30px' }}>Open-Ended Question</h1>
+            
             <div>
-                <h2 style={{ fontFamily: ' sans-serif', color: 'white', marginTop: '50px' }}>
+                <h2 style={{ fontFamily: ' sans-serif', color: 'white', marginTop: '20px' }}>
                     Question {currentQuestionIndex + 1} of {questions.length}
                 </h2>
                 <p style={{ color: 'white' }}>{questions[currentQuestionIndex].question}</p>
                 <div>
                     {isLastQuestion ? (
-                        <p style={{ color: 'white' }}>Time's Up!</p>
+                        <p style={{ color: 'red' }}>Time's Up!</p>
                     ) : (
                         <p style={{ color: 'white' }}>Time Remaining: {remainingTime} seconds</p>
                     )}
@@ -101,7 +102,11 @@ function OpenEndedQuestions() {
             </div>
 
             {/* Video element for displaying the user's camera feed */}
-            <video id='video' width='640' height='480' autoPlay muted ref={videoRef}></video>
+            <video id='video' width='800' height='300' autoPlay muted ref={videoRef}></video>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <HealthMonitor />
+            </div>
+            
         </div>
     );
 }

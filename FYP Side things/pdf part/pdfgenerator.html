@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Data PDF</title>
+  <script src="html2pdf.bundle.min.js"></script>
+  <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+</head>
+<body>
+
+  <button onclick="generatePDF()">Generate PDF</button>
+
+  <script>
+    // Function to generate PDF
+    function generatePDF() {
+      fetch('question.json')
+        .then(response => response.json())
+        .then(data => {
+          const patientData = data[0];
+          const pdfContent = generateHTML(patientData);
+          
+          // Generate PDF using html2pdf
+          html2pdf(pdfContent, {
+            margin: 10,
+            filename: 'patient_data.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+          });
+        });
+    }
+
+    // Function to generate HTML content
+    function generateHTML(patientData) {
+      const { patientID, GADscore, questions, hasAnxiety } = patientData;
+
+      const htmlContent = `
+        <h1>Patient Data</h1>
+        <p><strong>Patient ID:</strong> ${patientID}</p>
+        <p><strong>GAD Score:</strong> ${GADscore}</p>
+        <p><strong>Has Anxiety:</strong> ${hasAnxiety ? 'Yes' : 'No'}</p>
+
+        <h2>Questionnaire Data</h2>
+        <ul>
+          ${questions.map(question => `
+            <li>
+              <p><strong>Question ${question.question}:</strong></p>
+              <p>Percentage Happiness: ${question.percentageHappiness}%</p>
+              <p>Percentage Sadness: ${question.percentageSadness}%</p>
+              <p>Percentage Anger: ${question.percentageAnger}%</p>
+              <p>Percentage Fear: ${question.percentageFear}%</p>
+              <p>Percentage Neutral: ${question.percentageNeutral}%</p>
+              <p>Positive Sentiment: ${question.positiveSentiment}%</p>
+              <p>Negative Sentiment: ${question.negativeSentiment}%</p>
+              <p>Average Heart Rate: ${question.avgHeartRate}</p>
+              <p>Average Oxygen Level: ${question.avgOxygenLevel}</p>
+            </li>
+          `).join('')}
+        </ul>
+      `;
+
+      return htmlContent;
+    }
+  </script>
+
+</body>
+</html>

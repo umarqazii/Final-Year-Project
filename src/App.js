@@ -10,6 +10,7 @@ import PsychologistHome from './components/PsychologistHome';
 import PsychologistRegisterPatient from './components/PsychologistRegisterPatient';
 import PsychologistPatientProfiles from './components/PsychologistPatientProfiles';
 import OpenEndedQuestions from './components/OpenEndedQuestions';
+import HealthMonitor from './components/HealthMonitor';
 
 
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/psychologistregisterpatient" element={<PsychologistRegisterPatient />} />
           <Route path="/psychologistpatientprofiles" element={<PsychologistPatientProfiles />} />
           <Route path="/openendedquestions" element={<OpenEndedQuestions />} />
+          <Route path="/healthmonitor" element={<HealthMonitor />} />
         </Routes>
       </BrowserRouter>
     );

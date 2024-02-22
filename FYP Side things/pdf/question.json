@@ -1,0 +1,69 @@
+[
+    {
+      "patientID": "65ac1166296373f11c972c86",
+      "GADscore": 15,
+      "questions": [
+        {
+          "question": 1,
+          "percentageHappiness": 80,
+          "percentageSadness": 10,
+          "percentageAnger": 5,
+          "percentageFear": 2,
+          "percentageNeutral": 3,
+          "positiveSentiment": 70,
+          "negativeSentiment": 20,
+          "avgHeartRate": 75,
+          "avgOxygenLevel": 98
+        },
+        {
+          "question": 2,
+          "percentageHappiness": 80,
+          "percentageSadness": 10,
+          "percentageAnger": 5,
+          "percentageFear": 2,
+          "percentageNeutral": 3,
+          "positiveSentiment": 70,
+          "negativeSentiment": 20,
+          "avgHeartRate": 75,
+          "avgOxygenLevel": 98
+        },
+        {
+          "question": 3,
+          "percentageHappiness": 80,
+          "percentageSadness": 10,
+          "percentageAnger": 5,
+          "percentageFear": 2,
+          "percentageNeutral": 3,
+          "positiveSentiment": 70,
+          "negativeSentiment": 20,
+          "avgHeartRate": 75,
+          "avgOxygenLevel": 98
+        },
+        {
+          "question": 4,
+          "percentageHappiness": 80,
+          "percentageSadness": 10,
+          "percentageAnger": 5,
+          "percentageFear": 2,
+          "percentageNeutral": 3,
+          "positiveSentiment": 70,
+          "negativeSentiment": 20,
+          "avgHeartRate": 95,
+          "avgOxygenLevel": 98
+        },
+        {
+          "question": 5,
+          "percentageHappiness": 80,
+          "percentageSadness": 10,
+          "percentageAnger": 5,
+          "percentageFear": 2,
+          "percentageNeutral": 3,
+          "positiveSentiment": 70,
+          "negativeSentiment": 20,
+          "avgHeartRate": 75,
+          "avgOxygenLevel": 98
+        }
+      ],
+      "hasAnxiety": true
+    }
+  ]
