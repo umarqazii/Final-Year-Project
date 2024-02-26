@@ -1,6 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const { PythonShell } = require('python-shell');
+const multer = require('multer');
+const fs = require('fs');
 const bodyParser = require('body-parser');
 const app = express();
 const { Patient, MedicalRecord } = require('./Models/Database');
@@ -9,6 +12,7 @@ require("dotenv").config();
 
 app.use(cors());
 app.use(express.json());
+const upload = multer();
 
 //mongoose.connect('mongodb://127.0.0.1:27017/FYP', {});
 
@@ -158,6 +162,36 @@ app.post('/gadScore', (req, res) => {
       res.status(500).json({ message: 'Internal Server Error' });
     });
 });
+
+// ----------------------------------Process Video----------------------------------
+app.post('/process-video', upload.single('video'), (req, res) => {
+  try {
+    const videoData = req.file.buffer;
+    const videoPath = './temp/video.webm'; // Corrected path
+
+    // Ensure that the directory exists
+    const tempDir = 'temp';
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir, { recursive: true });
+    }
+
+    fs.writeFileSync(videoPath, videoData);
+
+    let options = {
+
+      scriptPath: 'C:\\Users\\Sys\\Desktop\\Final-Year-Project\\backend',
+      
+    };
+    
+    PythonShell.run('python_script.py', options, function (err, results) {
+      if (err) throw err;
+      console.log('results: %j', results);
+    });
+  
+  } catch (error) {
+    console.error('Error processing video:', error);
+  }
+} );
 
 
 
