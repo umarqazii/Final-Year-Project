@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import questions from './Questions.json';
 import PatientNavbar from './PatientNavbar';
 import HealthMonitor from './HealthMonitor';
-import VideoRecorder from './videoRecorder';
+import RecordingComponent from './RecordingComponent';
 
 function OpenEndedQuestions() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -71,7 +71,7 @@ function OpenEndedQuestions() {
             {/* Video element for displaying the user's camera feed */}
             <video id='video' width='800' height='300' autoPlay muted ref={videoRef}></video>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <VideoRecorder />
+                <RecordingComponent />
                 
             </div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>

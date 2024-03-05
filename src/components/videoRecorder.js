@@ -9,7 +9,8 @@ const VideoRecorder = () => {
 
   const startRecording = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+
       const mediaRecorder = new MediaRecorder(stream);
 
       const chunks = [];
@@ -20,7 +21,7 @@ const VideoRecorder = () => {
       };
 
       mediaRecorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'video/webm' });
+        const blob = new Blob(chunks, { type: 'video/mp4' });
         setVideoBlob(blob);
       };
 

@@ -164,34 +164,49 @@ app.post('/gadScore', (req, res) => {
 });
 
 // ----------------------------------Process Video----------------------------------
-app.post('/process-video', upload.single('video'), (req, res) => {
-  try {
-    const videoData = req.file.buffer;
-    const videoPath = './temp/video.webm'; // Corrected path
+// const { exec } = require('child_process');
+// app.post('/process-video', upload.single('video'), (req, res) => {
+//   try {
+//     const videoData = req.file.buffer;
+//     const videoPath = './temp/video.mp4'; // Corrected path
+//     const outputvideoPath = './temp/outputvideo.mp4'; // Corrected path
 
-    // Ensure that the directory exists
-    const tempDir = 'temp';
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
+//     // Ensure that the directory exists
+//     const tempDir = 'temp';
+//     if (!fs.existsSync(tempDir)) {
+//       fs.mkdirSync(tempDir, { recursive: true });
+//     }
 
-    fs.writeFileSync(videoPath, videoData);
+//     fs.writeFileSync(videoPath, videoData);
 
-    let options = {
+//     const ffmpegCommand = `ffmpeg -i ${videoPath} -c copy ${outputvideoPath}`;
 
-      scriptPath: 'C:\\Users\\Sys\\Desktop\\Final-Year-Project\\backend',
+// // Execute the FFmpeg command
+// exec(ffmpegCommand, (error, stdout, stderr) => {
+//   if (error) {
+//     console.error('FFmpeg error:', error);
+//     return;
+//   }
+// });
+
+//     //fs.writeFileSync(videoPath, videoData);
+
+
+//     let options = {
+
+//       scriptPath: 'C:\\Users\\Sys\\Desktop\\Final-Year-Project\\backend',
       
-    };
+//     };
     
-    PythonShell.run('python_script.py', options, function (err, results) {
-      if (err) throw err;
-      console.log('results: %j', results);
-    });
+//     PythonShell.run('python_script.py', options, function (err, results) {
+//       if (err) throw err;
+//       console.log('results: %j', results);
+//     });
   
-  } catch (error) {
-    console.error('Error processing video:', error);
-  }
-} );
+//   } catch (error) {
+//     console.error('Error processing video:', error);
+//   }
+// } );
 
 
 

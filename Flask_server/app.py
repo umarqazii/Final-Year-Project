@@ -18,7 +18,7 @@ def analyze_video():
     #video_file = request.files['video']
 
     # Save the video file
-    video_path = 'video.mp4'
+    video_path = 'C:\\Users\\Sys\\Desktop\\Final-Year-Project\\backend\\temp\\video.webm'
     #video_file.save(video_path)
     
     

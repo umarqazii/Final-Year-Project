@@ -35,7 +35,7 @@ def extract_frames(video_path, output_folder):
 
 if __name__ == "__main__":
     # Path to the WebM video file
-    video_path = "C:\\Users\\Sys\\Desktop\\Final-Year-Project\\backend\\temp\\video.webm"  # Replace this with the actual path to your WebM video file
+    video_path = "C:\\Users\\Sys\\Desktop\\Final-Year-Project\\backend\\temp\\video.mp4"  # Replace this with the actual path to your WebM video file
     
     # Output folder to save the frames
     output_folder = "C:\\Users\\Sys\\Desktop\\Final-Year-Project\\backend\\temp\\output"  # Replace this with the desired output folder path
