@@ -69,7 +69,7 @@ function OpenEndedQuestions() {
             </div>
 
             {/* Video element for displaying the user's camera feed */}
-            {/* <video id='video' width='800' height='300' autoPlay muted ref={videoRef}></video> */}
+            <video id='video' width='800' height='300' autoPlay muted ref={videoRef}></video>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <RecordingComponent />
                 
