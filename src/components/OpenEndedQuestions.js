@@ -1,83 +1,159 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import questions from './Questions.json';
 import PatientNavbar from './PatientNavbar';
 import HealthMonitor from './HealthMonitor';
-import RecordingComponent from './RecordingComponent';
 
 function OpenEndedQuestions() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [remainingTime, setRemainingTime] = useState(questions[0].timeInSeconds);
-    const [isTimerActive, setIsTimerActive] = useState(true);
-    const [isLastQuestion, setIsLastQuestion] = useState(false);
+    const [isTestStarted, setIsTestStarted] = useState(false);
+    const [isRecording, setIsRecording] = useState(false);
+    const [recordingStatus, setRecordingStatus] = useState('');
+    const [recordingsData, setRecordingsData] = useState([]);
+    const [showData, setShowData] = useState(false);
+     const [bloodRate, setBloodRate] = useState('');
+    const [heartRate, setHeartRate] = useState('');
 
-    const videoRef = useRef(null);
+    const startTest = () => {
+        setIsTestStarted(true);
+    };
 
-    useEffect(() => {
-        // Function to open the camera and display the feed
-        const openCamera = async () => {
-          try {
-            // Get access to the camera
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            
-            // Display the camera feed in the video element
-            if (videoRef.current) {
-              videoRef.current.srcObject = stream;
-            }
-          } catch (error) {
-            console.error('Error accessing camera:', error);
-          }
-        };
-        openCamera();
+    const startRecording = () => {
+        fetch('http://localhost:5000/start_recording', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                // Include any necessary data for starting recording
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            setIsRecording(true);
+            setRecordingStatus(data.message);
+            setTimeout(() => {
+                setRecordingStatus('Recording Completed. Click Stop Answer.');
+            }, 20000); // 20 seconds timer
+        })
+        .catch(error => console.error('Error starting recording:', error));
+    };
 
-        const timer = setInterval(() => {
-            if (isTimerActive) {
-                setRemainingTime((prevTime) => prevTime - 1);
-            }
-        }, 1000);
+    const stopRecording = () => {
+        fetch('http://localhost:5000/stop_recording', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            setIsRecording(false);
+            setRecordingStatus(data.message);
+        })
+        .catch(error => console.error('Error stopping recording:', error));
+    };
 
-        return () => clearInterval(timer); // Clear the interval on component unmount
-    }, [isTimerActive]);
+    const processRecording = () => {
+        fetch('http://localhost:5000/process_recordings', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(processedData => {
+            // Update the recordingsData state with the processed data
+            const newData = {
+                question: questions[currentQuestionIndex].question,
+                bloodRate: bloodRate,
+                heartRate: heartRate,
+                sentiment: processedData.Sentiment,
+                emotions: processedData.emotions
+            };
+            setRecordingsData(prevData => [...prevData, newData]);
+            setBloodRate('');
+            setHeartRate('');
+        })
+        .catch(error => console.error('Error processing recordings:', error));
+    };
+    
 
-    useEffect(() => {
-        if (remainingTime === 0 && currentQuestionIndex < questions.length - 1) {
-            setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-            setRemainingTime(questions[currentQuestionIndex + 1].timeInSeconds);
-        } else if (remainingTime === 0 && currentQuestionIndex === questions.length - 1) {
-            setIsLastQuestion(true);
-            setIsTimerActive(false);
+    const nextQuestion = () => {
+        if (currentQuestionIndex < questions.length - 1) {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+            setIsRecording(false);
+            setRecordingStatus('');
+        } else {
+            setShowData(true);
         }
-    }, [remainingTime, currentQuestionIndex]);
+    };
+
+    const showSavedData = () => {
+        setShowData(true);
+    }
+    const saveData = () => {
+        const newData = {
+            question: questions[currentQuestionIndex].question,
+            bloodRate: bloodRate,
+            heartRate: heartRate,
+            sentiment: '', // Placeholder for sentiment data
+            emotions: [] // Placeholder for emotions data
+        };
+        setRecordingsData([...recordingsData, newData]);
+        setBloodRate('');
+        setHeartRate('');
+    };
+
 
     return (
         <div className='App'>
             <PatientNavbar />
-
-            <h1 style={{ fontFamily: 'Audiowide, sans-serif', color: 'white', marginTop: '30px' }}>Open-Ended Question</h1>
-            
-            <div>
-                <h2 style={{ fontFamily: ' sans-serif', color: 'white', marginTop: '20px' }}>
-                    Question {currentQuestionIndex } of {questions.length - 1}
-                </h2>
-                <p style={{ color: 'white' }}>{questions[currentQuestionIndex].question}</p>
+            {!isTestStarted && (
+                <button onClick={startTest}>Start Test</button>
+            )}
+            {isTestStarted && !showData && (
                 <div>
-                    {isLastQuestion ? (
-                        <p style={{ color: 'red' }}>Time's Up!</p>
-                    ) : (
-                        <p style={{ color: 'white' }}>Time Remaining: {remainingTime} seconds</p>
-                    )}
+                    <h1 style={{ fontFamily: 'Audiowide, sans-serif', color: 'white', marginTop: '30px' }}>Open-Ended Question</h1>
+                    <div>
+                        <h2>Question {currentQuestionIndex + 1} of {questions.length}</h2>
+                        <p>{questions[currentQuestionIndex].question}</p>
+                        {/* Add input fields for blood rate and heart rate */}
+                        <div>
+                            <label>Blood Rate: </label>
+                            <input type="text" value={bloodRate} onChange={(e) => setBloodRate(e.target.value)} />
+                        </div>
+                        <div>
+                            <label>Heart Rate: </label>
+                            <input type="text" value={heartRate} onChange={(e) => setHeartRate(e.target.value)} />
+                        </div>
+                        {isRecording ? (
+                            <div>
+                                <p>{recordingStatus}</p>
+                                <button onClick={stopRecording}>Stop Answer</button>
+                            </div>
+                        ) : (
+                            <div>
+                                <button onClick={startRecording}>Start Answer</button>
+                            </div>
+                        )}
+                        {!isRecording && (
+                            <button onClick={processRecording}>Process Answer</button>
+                        )}
+                        
+                        <button onClick={nextQuestion}>Next Question</button>
+                        <button onClick={showSavedData}>Show Saved Data</button>
+                    </div>
+                    <HealthMonitor />
                 </div>
-            </div>
-
-            {/* Video element for displaying the user's camera feed */}
-            <video id='video' width='800' height='300' autoPlay muted ref={videoRef}></video>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <RecordingComponent />
-                
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                
-                <HealthMonitor />
-            </div>
+            )}
+            {showData && (
+                <div>
+                    <h2>Saved Data</h2>
+                    {recordingsData.map((data, index) => (
+                        <div key={index}>
+                            <h3>Question: {data.question}</h3>
+                            <p>Blood Rate: {data.bloodRate}</p>
+                            <p>Heart Rate: {data.heartRate}</p>
+                            <p>Sentiment: {data.sentiment}</p>
+                            <p>Emotions: {data.emotions.join(', ')}</p>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
