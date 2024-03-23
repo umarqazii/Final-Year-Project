@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import PatientNavbar from "./PatientNavbar";
 import { Card, Nav, Button } from 'react-bootstrap';
 import '../Contact.css';
-import githubimg from '../assets/github.png';
-import linkedinimg from '../assets/linkedin.png';
-import facebookimg from '../assets/fb.png';
-import instagramimg from '../assets/insta.png';
+import phoneimg from '../assets/phone.png';
+import hospitalimg from '../assets/hospital.png';
+import faqsimg from '../assets/faqs.png';
+import chatimg from '../assets/chat.png';
 import gmailimg from '../assets/gmail.png';
 function Contact() {
-    const [selectedTab, setSelectedTab] = useState('github'); // State to track the selected tab
+    const [selectedTab, setSelectedTab] = useState('phoneno'); // State to track the selected tab
 
     // Function to handle the email to personal email address
     const handleEmailtoPersonal = () => {
@@ -22,54 +22,57 @@ function Contact() {
 
     const renderContent = () => {
         switch (selectedTab) {
-            case 'facebook':
+            case 'phoneno':
                 return (
                     <Card.Body className="CardBodyContact">
-                        <Card.Img className="CardImgContact" variant="top" src={facebookimg}  /><br /><br/>
+                        <Card.Img className="CardImgContact" variant="top" src={phoneimg} style={{borderRadius: '5px'}}  /><br/><br/>
                         <Card.Text className="CardTextContact">
-                            <b>Username:</b> Umar Qazi
+                        <b>Psychologist:</b> Wajeeha Zafar
+                            <br />0333-1234567 
+                        </Card.Text>
+                        <Button variant="dark"  onclick="window.location.href='tel:03331234567'" target="_blank" rel="noopener noreferrer" style={{marginRight:'5px'}}>Call Now</Button>
+                        <Button variant="dark" onClick={() => navigator.clipboard.writeText('03331234567')}>Copy Phone Number</Button>
+                    </Card.Body>
+                );
+            case 'hospital':
+                return (
+                    <Card.Body className="CardBodyContact">
+                        <Card.Img className="CardImgContact" variant="top" src={hospitalimg}  /><br /><br/>
+                        <Card.Text className="CardTextContact">
+                            <b>Clinic:</b> Soch Clinic
                             <br />
                             
                         </Card.Text>
-                        <Button variant="dark" href="https://www.facebook.com/hafiz.umarqazi.7" target="_blank" rel="noopener noreferrer" style={{marginRight: '5px'}}>Go to Facebook</Button>
-                        <Button variant="dark" onClick={() => navigator.clipboard.writeText('https://www.facebook.com/hafiz.umarqazi.7')} >Copy Link</Button>
+                        <Button variant="dark" href="https://sochclinics.org/wajeehazafar" target="_blank" rel="noopener noreferrer" style={{marginRight: '5px'}}>Go to Website</Button>
+                        <Button variant="dark" onClick={() => navigator.clipboard.writeText('https://sochclinics.org/wajeehazafar')} >Copy Link</Button>
                     </Card.Body>
                 );
-            case 'instagram':
+            case 'faqs':
                 return (
                     <Card.Body className="CardBodyContact">
-                        <Card.Img className="CardImgContact" variant="top" src={instagramimg}  /><br/><br/>
+                        <Card.Img className="CardImgContact" variant="top" src={faqsimg}  /><br/><br/>
                         <Card.Text className="CardTextContact">
-                        <b>Username:</b> umarqazii
+                        <b>Frequently Asked Questions</b> 
                             <br />
                         </Card.Text>
-                        <Button variant="dark" href="https://www.instagram.com/umarqazii/" target="_blank" rel="noopener noreferrer" style={{marginRight:'5px'}}>Go to Instagram</Button>
-                        <Button variant="dark" onClick={() => navigator.clipboard.writeText('https://www.instagram.com/umarqazii/')} >Copy Link</Button>
-                    </Card.Body>
+                        <b><p>Q: Will the data I provide remain Confidential?</p></b>
+                        <p>A: Yes, the data you provide will remain confidential and will only be accessible to the psychologist.</p>
+                        <b><p>Q: How can I trust the psychologist?</p></b>
+                        <p>A: The psychologist is a certified professional and has been verified by the hospital.</p>
+                        <b><p>Q: How can I trust the hospital?</p></b>
+                        <p>A: The hospital is a well-known and reputable organization.</p>
+
+                        </Card.Body>
                 );
-            case 'github':
+            case 'chatwithus':
                 return (
                     <Card.Body className="CardBodyContact">
-                        <Card.Img className="CardImgContact" variant="top" src={githubimg} style={{borderRadius: '5px'}}  /><br/><br/>
+                        <Card.Img className="CardImgContact" variant="top" src={chatimg}  /><br/><br/>
                         <Card.Text className="CardTextContact">
-                        <b>Username:</b> umarqazii
+                        <b>Chat Feature is currently unavailable</b>
                             <br />
                         </Card.Text>
-                        <Button variant="dark" href="https://github.com/umarqazii" target="_blank" rel="noopener noreferrer" style={{marginRight:'5px'}}>Go to GitHub</Button>
-                        <Button variant="dark" onClick={() => navigator.clipboard.writeText('https://github.com/umarqazii')}>Copy Link</Button>
-                    </Card.Body>
-                );
-            case 'linkedin':
-                return (
-                    <Card.Body className="CardBodyContact">
-                        <Card.Img className="CardImgContact" variant="top" src={linkedinimg}  /><br/><br/>
-                        <Card.Text className="CardTextContact">
-                        <b>Username:</b> Umar Qazi
-                            <br />
-                        </Card.Text>
-                        <Button variant="dark" href="https://www.linkedin.com/in/umar-qazi-61b62a24a/" target="_blank" rel="noopener noreferrer" style={{marginRight: '5px'}}>Go to LinkedIn</Button>
-                        <Button variant="dark" onClick={() => navigator.clipboard.writeText('https://www.linkedin.com/in/umar-qazi-61b62a24a/')} >Copy Link</Button>
-                    </Card.Body>
+                        </Card.Body>
                 );
 
             case 'gmail':
@@ -124,29 +127,27 @@ function Contact() {
     return (
         <div className="App">
             <PatientNavbar />
-            <h1 style={{ fontFamily: 'Audiowide, sans-serif', color: 'white', marginTop: '50px' }}>Contact Me</h1>
+            <h1 style={{ fontFamily: 'Audiowide, sans-serif', color: 'white', marginTop: '50px' }}>Contact Us</h1>
 
             <div className="ContactContainer">
                 <Card className="CardContact">
                     <Card.Header className="CardHeaderContact">
-                        <Nav variant="tabs" defaultActiveKey="#github">
+                        <Nav variant="tabs" defaultActiveKey="#phoneno">
                             <Nav.Item>
-                                <Nav.Link href="#github" onClick={() => setSelectedTab('github')}>GitHub</Nav.Link>
+                                <Nav.Link href="#phoneno" onClick={() => setSelectedTab('phoneno')}>Phone No</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link href="#hospital" onClick={() => setSelectedTab('hospital')}>Hospital</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link href="#faqs" onClick={() => setSelectedTab('faqs')}>FAQs</Nav.Link>
                             </Nav.Item>
 
                             <Nav.Item>
-                                <Nav.Link href="#linkedin" onClick={() => setSelectedTab('linkedin')}>LinkedIn</Nav.Link>
+                                <Nav.Link href="#chatwithus" onClick={() => setSelectedTab('chatwithus')}>Chat with Us</Nav.Link>
                             </Nav.Item>
 
-                            <Nav.Item>
-                                <Nav.Link href="#facebook" onClick={() => setSelectedTab('facebook')}>Facebook</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link href="#instagram" onClick={() => setSelectedTab('instagram')}>Instagram</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link href="#gmail" onClick={() => setSelectedTab('gmail')}>Gmail</Nav.Link>
-                            </Nav.Item>
+                            
 
                         </Nav>
                     </Card.Header>

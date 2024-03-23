@@ -6,7 +6,8 @@ const multer = require('multer');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const app = express();
-const { Patient, MedicalRecord } = require('./Models/Database');
+const { Patient, PatientEvaluation, Emotions } = require('./Models/Database');
+
 const nodemailer = require('nodemailer');
 require("dotenv").config();
 
@@ -90,6 +91,7 @@ let FirstName = '';
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
+
   // Check if it's the psychologist
   if (username === 'psy' && password === 'psy') {
     return res.status(200).json({ isPsychologist: true, message: 'Psy login successful' });
@@ -144,24 +146,165 @@ app.get('/all-patients', (req, res) => {
     });
 });
 
-app.listen(5000, () => {
-  console.log('Server is running on port 5000');
-});
+// ----------------------------------Random Questions----------------------------------
+function generateRandomQuestions() {
+  const getRandomPercentage = () => Math.floor(Math.random() * 101);
+  const getRandomSentiment = () => ['positive', 'negative', 'neutral'][Math.floor(Math.random() * 3)];
+  const getRandomNumber = () => Math.floor(Math.random() * 101);
+
+  const questions = {
+    q1percentageHappiness: getRandomPercentage(),
+    q1percentageSadness: getRandomPercentage(),
+    q1percentageAnger: getRandomPercentage(),
+    q1percentageFear: getRandomPercentage(),
+    q1percentageNeutral: getRandomPercentage(),
+    q1Sentiment: getRandomSentiment(),
+    q1HeartRate: getRandomNumber(),
+    q1OxygenLevel: getRandomNumber(),
+    q2percentageHappiness: getRandomPercentage(),
+    q2percentageSadness: getRandomPercentage(),
+    q2percentageAnger: getRandomPercentage(),
+    q2percentageFear: getRandomPercentage(),
+    q2percentageNeutral: getRandomPercentage(),
+    q2Sentiment: getRandomSentiment(),
+    q2HeartRate: getRandomNumber(),
+    q2OxygenLevel: getRandomNumber(),
+    q3percentageHappiness: getRandomPercentage(),
+    q3percentageSadness: getRandomPercentage(),
+    q3percentageAnger: getRandomPercentage(),
+    q3percentageFear: getRandomPercentage(),
+    q3percentageNeutral: getRandomPercentage(),
+    q3Sentiment: getRandomSentiment(),
+    q3HeartRate: getRandomNumber(),
+    q3OxygenLevel: getRandomNumber(),
+    q4percentageHappiness: getRandomPercentage(),
+    q4percentageSadness: getRandomPercentage(),
+    q4percentageAnger: getRandomPercentage(),
+    q4percentageFear: getRandomPercentage(),
+    q4percentageNeutral: getRandomPercentage(),
+    q4Sentiment: getRandomSentiment(),
+    q4HeartRate: getRandomNumber(),
+    q4OxygenLevel: getRandomNumber(),
+    q5percentageHappiness: getRandomPercentage(),
+    q5percentageSadness: getRandomPercentage(),
+    q5percentageAnger: getRandomPercentage(),
+    q5percentageFear: getRandomPercentage(),
+    q5percentageNeutral: getRandomPercentage(),
+    q5Sentiment: getRandomSentiment(),
+    q5HeartRate: getRandomNumber(),
+    q5OxygenLevel: getRandomNumber(),
+    q6percentageHappiness: getRandomPercentage(),
+    q6percentageSadness: getRandomPercentage(),
+    q6percentageAnger: getRandomPercentage(),
+    q6percentageFear: getRandomPercentage(),
+    q6percentageNeutral: getRandomPercentage(),
+    q6Sentiment: getRandomSentiment(),
+    q6HeartRate: getRandomNumber(),
+    q6OxygenLevel: getRandomNumber(),
+    q7percentageHappiness: getRandomPercentage(),
+    q7percentageSadness: getRandomPercentage(),
+    q7percentageAnger: getRandomPercentage(),
+    q7percentageFear: getRandomPercentage(),
+    q7percentageNeutral: getRandomPercentage(),
+    q7Sentiment: getRandomSentiment(),
+    q7HeartRate: getRandomNumber(),
+    q7OxygenLevel: getRandomNumber(),
+    q8percentageHappiness: getRandomPercentage(),
+    q8percentageSadness: getRandomPercentage(),
+    q8percentageAnger: getRandomPercentage(),
+    q8percentageFear: getRandomPercentage(),
+    q8percentageNeutral: getRandomPercentage(),
+    q8Sentiment: getRandomSentiment(),
+    q8HeartRate: getRandomNumber(),
+    q8OxygenLevel: getRandomNumber(),
+    q9percentageHappiness: getRandomPercentage(),
+    q9percentageSadness: getRandomPercentage(),
+    q9percentageAnger: getRandomPercentage(),
+    q9percentageFear: getRandomPercentage(),
+    q9percentageNeutral: getRandomPercentage(),
+    q9Sentiment: getRandomSentiment(),
+    q9HeartRate: getRandomNumber(),
+    q9OxygenLevel: getRandomNumber(),
+    q10percentageHappiness: getRandomPercentage(),
+    q10percentageSadness: getRandomPercentage(),
+    q10percentageAnger: getRandomPercentage(),
+    q10percentageFear: getRandomPercentage(),
+    q10percentageNeutral: getRandomPercentage(),
+    q10Sentiment: getRandomSentiment(),
+    q10HeartRate: getRandomNumber(),
+    q10OxygenLevel: getRandomNumber()
+  };
+
+  return questions;
+}
 
 // ----------------------------------Store GAD7 Score----------------------------------
 
-app.post('/gadScore', (req, res) => {
-  const { gadScore } = req.body;
-  const newMedicalRecord = new MedicalRecord({ patientId: userID, GAD7Score: gadScore });
-  newMedicalRecord.save()
+app.post('/gadScore', async (req, res) => {
+  try {
+    const { GADscore } = req.body;
+    const questions = generateRandomQuestions();
+    const patientID = userID;
+    // if patientID is already present in the database, update the GAD7 score
+    if (await PatientEvaluation.findOne({
+      patientID: userID
+    })) {
+      await PatientEvaluation.findOneAndUpdate({ patientID: userID }, { GADscore: req.body.GADscore });
+      return res.status(200).json({ message: 'GAD7 Score updated successfully' });
+    }
+    else {
+      const newMedicalRecord = new PatientEvaluation({ patientID, GADscore, questions, hasAnxiety: true });
+    await newMedicalRecord.save();
+    res.status(200).json({ message: 'GAD7 Score added successfully' });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+// -----------------------Patient Evaluation----------------------------------
+// Endpoint to handle POST requests to view report
+app.post('/view-report', async (req, res) => {
+  const { patientID } = req.body;
+
+  try {
+    // Search the database for the patient with the provided ID
+    const patientReport = await PatientEvaluation.findOne({ patientID: patientID });
+
+    if (!patientReport) {
+      return res.status(404).json({ error: 'Patient not found' });
+    }
+
+    // Send the GADscore in the response
+    //res.status(200).json({ GADscore: patient.GADscore });
+    // Send the entire patient object in the response
+    res.status(200).json(patientReport);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ----------------------------------Storing Emotions----------------------------------
+app.post('/sendingEmotions', (req, res) => {
+  const { frameResponses, transcriptResponse } = req.body;
+  const newEmotions = new Emotions({ patientID: userID, emotionsArray: frameResponses, Sentiment: transcriptResponse });
+  newEmotions.save()
     .then(() => {
-      res.status(200).json({ message: 'GAD7 Score added successfully' });
+      res.status(200).json({ message: 'Emotions added successfully' });
     })
     .catch(err => {
       console.error(err);
       res.status(500).json({ message: 'Internal Server Error' });
     });
 });
+
+
+app.listen(4000, () => {
+  console.log('Server is running on port 4000');
+});
+
 
 // ----------------------------------Process Video----------------------------------
 // const { exec } = require('child_process');

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PatientNavbar from './PatientNavbar';
+import axios from 'axios';
 import '../App.css';
 
 function ClosedEndedQuestions() {
@@ -12,10 +13,32 @@ function ClosedEndedQuestions() {
         setResponses(newResponses);
     };
 
-    // const calculateScore = () => {
-    //     const score = responses.reduce((total, response) => total + response, 0);
-    //     return score;
-    // };
+    const calculateScore = () => {
+        let score = responses.reduce((total, response) => total + response, 0);
+        return score;
+    };
+
+    //store the GAD-7 score in the database
+    const handleSubmit = () => {
+        let GADscore = calculateScore();
+        console.log("GAD Score:", GADscore); // Debugging log to ensure gadScore is correct
+    
+        axios
+            .post('http://localhost:4000/gadScore', {
+                GADscore: GADscore, // Send gadScore with the correct key name
+            })
+            .then((res) => {
+                console.log("Response:", res.data); // Log the response data
+                // Reload the page
+                window.location.reload();
+                // Handle success, such as displaying a success message to the user
+            })
+            .catch((err) => {
+                console.error("Error:", err); // Log the error for debugging
+                // Handle error, such as displaying an error message to the user
+            });
+    };
+
     return (
         <div className='App'>
             <PatientNavbar />
@@ -91,7 +114,10 @@ function ClosedEndedQuestions() {
                         </form>
 
                         <div className="text-center">
-                            <Link to="/OpenEndedQuestions" className="btn btn-primary">
+                            <button style={{marginBottom: '5px'}} className="btn btn-primary" onClick={handleSubmit}>
+                                Submit
+                            </button><br></br>
+                            <Link  to="/OpenEndedQuestions" className="btn btn-primary">
                                 Proceed to Open-ended Questions
                             </Link>
                         </div>
@@ -99,6 +125,7 @@ function ClosedEndedQuestions() {
                 </div>
             </div>
             <p style={{color: "white"}}>GAD-7 Standard Questionnaire</p>
+            <a href='https://adaa.org/sites/default/files/GAD-7_Anxiety-updated_0.pdf'>Source</a>
         </div>
     );
 }

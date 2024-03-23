@@ -10,10 +10,12 @@ import '../App.css';
 function PsychologistPatientProfiles() {
   const [patientList, setPatientList] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [medicalReport, setMedicalReport] = useState(null);
+  const [selectedPatient, setSelectedPatient] = useState(null);
 
   useEffect(() => {
     // Fetch all patients
-    axios.get('http://localhost:5000/all-patients')
+    axios.get('http://localhost:4000/all-patients')
       .then(response => setPatientList(response.data))
       .catch(error => console.error(error));
   }, []);
@@ -23,6 +25,25 @@ function PsychologistPatientProfiles() {
     const fullName = `${patient.firstName} ${patient.lastName}`.toLowerCase();
     return fullName.includes(searchQuery.toLowerCase());
   });
+
+  // Function to send patientID to backend and fetch medical report
+  const fetchMedicalReport = (patientID) => {
+    // Send patientID to backend
+    axios.post('http://localhost:4000/view-report', { patientID })
+      .then(response => {
+        // Handle response if needed
+        console.log(response.data);
+        setMedicalReport(response.data);
+      })
+      .catch(error => console.error(error));
+  };
+
+  // Function to handle view report button click
+  const handleViewReport = (patientID) => {
+    setSelectedPatient(patientID);
+    fetchMedicalReport(patientID);
+  };
+
 
   return (
     <div className="App">
@@ -51,14 +72,54 @@ function PsychologistPatientProfiles() {
                 {`Email: ${patient.email}`}
                 <br />
                 {`Phone: ${patient.phoneNumber}`}
+                <br />
               </Card.Text>
               <div style={{ marginTop: 'auto', marginBottom: '5px' }}>
-                <Button variant="dark" href={`https://lab.mlaw.gov.sg/files/Sample-filled-in-MR.pdf`} target="_blank" rel="noopener noreferrer">View Report</Button>
+                <Button variant="dark" onClick={() => handleViewReport(patient._id)}>View Report</Button>
               </div>
             </Card.Body>
           </Card>
         ))}
       </div>
+      
+      {medicalReport && selectedPatient && (
+        <div>
+          <h2>Medical Report</h2>
+          <p>Patient ID: {medicalReport.patientID}</p>
+          <p>GAD Score: {medicalReport.GADscore}</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>% Happiness</th>
+                <th>% Sadness</th>
+                <th>% Anger</th>
+                <th>% Fear</th>
+                <th>% Neutral</th>
+                <th>Sentiment</th>
+                <th>Heart Rate</th>
+                <th>Oxygen Level</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(medicalReport.questions).map(question => (
+                <tr key={question}>
+                  <td>{question}</td>
+                  <td>{medicalReport.questions[question]['% Happiness']}</td>
+                  <td>{medicalReport.questions[question]['% Sadness']}</td>
+                  <td>{medicalReport.questions[question]['% Anger']}</td>
+                  <td>{medicalReport.questions[question]['% Fear']}</td>
+                  <td>{medicalReport.questions[question]['% Neutral']}</td>
+                  <td>{medicalReport.questions[question]['Sentiment']}</td>
+                  <td>{medicalReport.questions[question]['Heart Rate']}</td>
+                  <td>{medicalReport.questions[question]['Oxygen Level']}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p>Has Anxiety: {medicalReport.hasAnxiety.toString()}</p>
+        </div>
+      )}
     </div>
   );
 }

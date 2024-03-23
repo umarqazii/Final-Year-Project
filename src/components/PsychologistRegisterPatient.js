@@ -20,7 +20,7 @@ function PsychologistRegisterPatient() {
         } 
         else {
         axios
-            .post('http://localhost:5000/register-patient', {
+            .post('http://localhost:4000/register-patient', {
                 firstName: firstName,
                 lastName: lastName,
                 email: email,
