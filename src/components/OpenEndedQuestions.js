@@ -165,7 +165,7 @@ function OpenEndedQuestions() {
                 />
                 {(completed && completed1) ? (
                     <div>
-                        <h2 style={{color: 'white'}}>Analysis completed.</h2>
+                        <h2>Analysis completed.</h2>
                         <button onClick={() => {sendtoBackend()}}>Submit</button>
 
                     </div>

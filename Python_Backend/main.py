@@ -133,11 +133,11 @@ def start_recording():
 
     # Get audio and video parameters from the request data
     data = request.json
-    audio_duration = data.get('audio_duration', 20)
+    audio_duration = data.get('audio_duration', 10)
     audio_fs = data.get('audio_fs', 44100)
     audio_channels = data.get('audio_channels', 2)
 
-    video_duration = data.get('video_duration', 20)
+    video_duration = data.get('video_duration', 10)
     video_fps = data.get('video_fps', 30)
     video_resolution = data.get('video_resolution', (640, 480))
 
@@ -171,7 +171,8 @@ def process_recordings():
     english_text = translate_urdu_to_english(urdu_text)
     sentiment = analyze_sentiment(english_text)    
     emotions = analyze_facial_emotions("recorded_video.avi")
-
+    print(emotions)
+    print(sentiment)
     return jsonify({
         "Sentiment": sentiment,
         "emotions":emotions     
