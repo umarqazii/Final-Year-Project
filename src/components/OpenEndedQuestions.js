@@ -27,7 +27,6 @@ function OpenEndedQuestions() {
         const captureAndSendFrame = async () => {
             const imageSrc = webcamRef.current.getScreenshot();
         
-
             try {
                 const response = await axios.post('http://localhost:5000/save-and-analyze-frame', { frame: imageSrc });
                 //encode the image
@@ -142,16 +141,67 @@ function OpenEndedQuestions() {
         }
     };
 
-    const sendEncodedImagestoBackend = async () => {
-        // Send encoded images to backend
+    // const sendEncodedImagestoBackend = async () => {
+    //     // Send encoded images to backend
+    //     try {
+    //         const response = await axios.post('http://localhost:4000/sendingImages', {
+    //             encodedimages: encodedimages
+    //         });
+    //         console.log('Images sent to backend:', response.data);
+    //     } catch (error) {
+    //         console.error('Error sending images to backend:', error);
+    //     }
+    // };
+
+
+
+    const sendImageChunk = async (chunk) => {
+        console.log("hello",totalChunks)
         try {
-            const response = await axios.post('http://localhost:4000/sendingImages', {
-                encodedimages: encodedimages
-            });
-            console.log('Images sent to backend:', response.data);
+            const response = await axios.post('http://localhost:4000/saveImageChunk', { chunk });
+            console.log('Chunk sent to backend:', response.data);
         } catch (error) {
-            console.error('Error sending images to backend:', error);
+            console.error('Error sending chunk to backend:', error);
         }
+    };
+    
+    const CHUNK_SIZE = 100000; // Adjust the chunk size as needed
+       let totalChunks;
+    const sendEncodedImagestoBackend = async () => {
+        // Iterate over each encoded image and send them one by one
+        for (const encodedImage of encodedimages) {
+            // Split the base64 image string into chunks
+             totalChunks = Math.ceil(encodedImage.length / CHUNK_SIZE);
+            for (let i = 0; i < totalChunks; i++) {
+                const start = i * CHUNK_SIZE;
+                const end = (i + 1) * CHUNK_SIZE;
+                const chunk = encodedImage.substring(start, end);
+    
+                // Send the chunk to the backend
+                await sendImageChunk(chunk);
+            }
+        
+    
+        // After sending all image chunks, trigger saving of accumulated images
+        try {
+            console.log("saving image")
+            const saveResponse = await axios.post('http://localhost:4000/saveImages');
+            console.log('Images saved to backend:', saveResponse.data);
+        } catch (error) {
+            console.error('Error saving images to backend:', error);
+        }
+
+    }
+
+      // After sending all image chunks, trigger saving of accumulated images
+      try {
+        console.log("saving images to mongodb")
+        const saveResponse = await axios.post('http://localhost:4000/saveAccumulatedImages');
+        console.log('Images saved to backend:', saveResponse.data);
+    } catch (error) {
+        console.error('Error saving images to backend:', error);
+    }
+
     };
 
 
@@ -188,7 +238,7 @@ function OpenEndedQuestions() {
                 {(completed && completed1) ? (
                     <div>
                         <h2 style={{color: 'white'}}>Analysis completed.</h2>
-                        <button onClick={() => {sendtoBackend(); sendEncodedImagestoBackend(); }}>Submit</button>
+                        <button onClick={() => {sendEncodedImagestoBackend(); }}>Submit</button>
 
                     </div>
                 ) : null}
