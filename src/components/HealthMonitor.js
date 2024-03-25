@@ -79,13 +79,13 @@ function HealthMonitor() {
         calculateAverageOxygenLevel();
     }, [heartRateArray, oxygenLevelArray]);
 
-    // display the heart rate and oxygen level arrays in the console
-    console.log('Heart Rate Array:', heartRateArray);
-    console.log('Oxygen Level Array:', oxygenLevelArray);
+    // // display the heart rate and oxygen level arrays in the console
+    // console.log('Heart Rate Array:', heartRateArray);
+    // console.log('Oxygen Level Array:', oxygenLevelArray);
 
-    // display the average heart rate and oxygen level in the console
-    console.log('Average Heart Rate:', averageHeartRate);
-    console.log('Average Oxygen Level:', averageOxygenLevel);
+    // // display the average heart rate and oxygen level in the console
+    // console.log('Average Heart Rate:', averageHeartRate);
+    // console.log('Average Oxygen Level:', averageOxygenLevel);
 
     return (
         <div className='HealthMonitorBox'>

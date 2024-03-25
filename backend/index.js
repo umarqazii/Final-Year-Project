@@ -6,7 +6,7 @@ const multer = require('multer');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const app = express();
-const { Patient, PatientEvaluation, Emotions } = require('./Models/Database');
+const { Patient, PatientEvaluation, Emotions, EncodedImages } = require('./Models/Database');
 
 const nodemailer = require('nodemailer');
 require("dotenv").config();
@@ -293,6 +293,21 @@ app.post('/sendingEmotions', (req, res) => {
   newEmotions.save()
     .then(() => {
       res.status(200).json({ message: 'Emotions added successfully' });
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ message: 'Internal Server Error' });
+    });
+});
+
+// ----------------------------------Storing Encoded Images----------------------------------
+
+app.post('/sendingImages', (req, res) => {
+  const { encodedimages } = req.body;
+  const newImages = new EncodedImages({ patientID: userID, encodedImages: encodedimages });
+  newImages.save()
+    .then(() => {
+      res.status(200).json({ message: 'Images added successfully' });
     })
     .catch(err => {
       console.error(err);
