@@ -234,6 +234,13 @@ let Emotions = new Schema({
 }, {
   collection: 'emotions'
 });
+
+let EncodedImages = new Schema({
+  patientID: { type: Schema.Types.ObjectId, ref: 'Patient'},
+  encodedImages: { type: Array },
+}, {
+  collection: 'encodedImages'
+});
   
 
   module.exports = {
@@ -241,6 +248,7 @@ let Emotions = new Schema({
     PatientEvaluation: mongoose.model('PatientEvaluation', patientEvaluation),
     PatientReport: mongoose.model('PatientReport', patientReport),
     Emotions: mongoose.model('Emotions', Emotions),
+    EncodedImages: mongoose.model('EncodedImages', EncodedImages),
   };
   
 
