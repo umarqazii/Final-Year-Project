@@ -3,7 +3,6 @@ import axios from 'axios';
 import questions from './Questions.json';
 import PatientNavbar from './PatientNavbar';
 import HealthMonitor from './HealthMonitor';
-import RecordingComponent from './RecordingComponent';
 import Webcam from 'react-webcam';
 
 function OpenEndedQuestions() {
@@ -31,7 +30,7 @@ function OpenEndedQuestions() {
                 const emotion = response.data.emotion;
                 setFrameResponses(prevResponses => [...prevResponses, emotion]); // Add emotion to responses array
                 frameCount++; // Increment counter
-                if (frameCount === 6) setCompleted(true); // Check if all responses are received
+                if (frameCount === 150) setCompleted(true); // Check if all responses are received
             } catch (error) {
                 console.error('Error sending frame to backend:', error);
             }
@@ -58,10 +57,10 @@ function OpenEndedQuestions() {
                 setTranscript(accumulatedTranscript); // Update state with the accumulated transcript
                 console.log('Final Transcript:', accumulatedTranscript); // Log final transcript
 
-                // Send transcript to backend after 30 seconds
+                // Send transcript to backend after 300 seconds
                 setTimeout(() => {
                     sendTranscriptToBackend(accumulatedTranscript);
-                }, 30000);
+                }, 300000);
             };
 
             recognition.start();
@@ -81,13 +80,13 @@ function OpenEndedQuestions() {
 
         const intervalId = setInterval(() => {
             captureAndSendFrame();
-        }, 5000); // Capture frame and send it every 5 seconds
+        }, 2000); // Capture frame and send it every 5 seconds
 
         const timeoutId = setTimeout(() => {
             clearInterval(intervalId); // Stop capturing frames
             webcamRef.current.stream.getTracks().forEach(track => track.stop()); // Stop the webcam stream
             if (recognition) recognition.stop(); // Stop speech recognition if it's defined
-        }, 30000); // Stop after 30 seconds
+        }, 300000); // Stop after 30 seconds
 
         startSpeechRecognition();
 
@@ -157,15 +156,17 @@ function OpenEndedQuestions() {
 
             {/* Video element for displaying the user's camera feed */}
 
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
                 <Webcam
                     audio={false}
                     ref={webcamRef}
                     screenshotFormat="image/png"
+                    width="400"
+                    height="400"
                 />
                 {(completed && completed1) ? (
                     <div>
-                        <h2>Analysis completed.</h2>
+                        <h2 style={{fontFamily: 'Audiowide, sans-serif',color: 'white'}}>Analysis completed</h2>
                         <button onClick={() => {sendtoBackend()}}>Submit</button>
 
                     </div>

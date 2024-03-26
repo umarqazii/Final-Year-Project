@@ -1,47 +1,47 @@
 [
   {
-    "question": "Have you Started the Recording? you have 10 seconds to start the recording",
-    "timeInSeconds": 10
+    "question": "Make sure your Face is in the center of the frame",
+    "timeInSeconds": 5
   },
   {
-    "question": "Can you describe a recent situation that made you feel extremely worried or stressed? What were your thoughts and feelings at that moment?",
-    "timeInSeconds": 2
+    "question": "Do you experience breathing difficulty (eg, excessively rapid breathing, breathlessness in the absence of physical exertion) What sort of Situation can cause this?",
+    "timeInSeconds": 25
   },
   {
-    "question": "Can you share an experience where social situations triggered your emotional distress?",
-    "timeInSeconds": 2
+    "question": "What's something you've never told anyone about yourself, but you wish someone knew?",
+    "timeInSeconds": 30
   },
   {
     "question": "How does social pressure affect your relationships with friends and family?",
-    "timeInSeconds": 2
+    "timeInSeconds": 30
   },
   {
     "question": "Have you ever felt overwhelmed by the pressure to excel at work or in your studies?",
-    "timeInSeconds": 2
+    "timeInSeconds": 30
   },
   {
-    "question": "What physical symptoms do you experience when you face performance-related stress?",
-    "timeInSeconds": 2
-  },
-  {
-    "question": "Have you ever been overly concerned about your health or experienced distress related to health issues?",
-    "timeInSeconds": 2
-  },
-  {
-    "question": "Did you fall prey to Coronavirus? Can you describe any specific situations or challenges you've faced during this time?",
-    "timeInSeconds": 2
+    "question": "Think about a decision you regret. What led you to make that choice?",
+    "timeInSeconds": 30
   },
   {
     "question": "Are there specific aspects of your future or career that cause you significant worry or stress?",
-    "timeInSeconds": 2
+    "timeInSeconds": 30
   },
   {
-    "question": "Share any specific fears or triggers that aggravate your emotional distress.",
-    "timeInSeconds": 2
+    "question": "Do you sometimes feel like your peers are better than you are in academics.",
+    "timeInSeconds": 30
   },
   {
     "question": "What strategies or techniques have you found helpful in managing intense emotional reactions? Which ones do you find less effective, and why?",
-    "timeInSeconds": 2
+    "timeInSeconds": 30
+  },
+  {
+    "question": "What physical symptoms do you experience when you face performance-related stress?",
+    "timeInSeconds": 30
+  },
+  {
+    "question": "Did you fall prey to Coronavirus? Can you describe any specific situations or challenges you've faced during this time?",
+    "timeInSeconds": 30
   }
  
 ]

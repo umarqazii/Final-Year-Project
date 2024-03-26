@@ -228,9 +228,12 @@ let patientReport = new Schema({
 });
 
 let Emotions = new Schema({
-  patientID: { type: Schema.Types.ObjectId, ref: 'Patient'},
+  patientID: { type: Schema.Types.ObjectId, ref: 'Patient', unique: true},
+  GADscore: { type: Number },
   emotionsArray: { type: Array },
   Sentiment: { type: String },
+  HeartRate: { type: Array },
+  OxygenLevel: { type: Array },
 }, {
   collection: 'emotions'
 });

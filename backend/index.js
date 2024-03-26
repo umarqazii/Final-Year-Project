@@ -87,6 +87,9 @@ app.post('/register-patient', (req, res) => {
 let userID = '';
 let FirstName = '';
 
+let HeartRate = [];
+let OxygenLevel = [];
+
 // ----------------------------------Login route (used to check if the person is registered)----------------------------------
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
@@ -147,121 +150,143 @@ app.get('/all-patients', (req, res) => {
 });
 
 // ----------------------------------Random Questions----------------------------------
-function generateRandomQuestions() {
-  const getRandomPercentage = () => Math.floor(Math.random() * 101);
-  const getRandomSentiment = () => ['positive', 'negative', 'neutral'][Math.floor(Math.random() * 3)];
-  const getRandomNumber = () => Math.floor(Math.random() * 101);
+// function generateRandomQuestions() {
+//   const getRandomPercentage = () => Math.floor(Math.random() * 101);
+//   const getRandomSentiment = () => ['positive', 'negative', 'neutral'][Math.floor(Math.random() * 3)];
+//   const getRandomNumber = () => Math.floor(Math.random() * 101);
 
-  const questions = {
-    q1percentageHappiness: getRandomPercentage(),
-    q1percentageSadness: getRandomPercentage(),
-    q1percentageAnger: getRandomPercentage(),
-    q1percentageFear: getRandomPercentage(),
-    q1percentageNeutral: getRandomPercentage(),
-    q1Sentiment: getRandomSentiment(),
-    q1HeartRate: getRandomNumber(),
-    q1OxygenLevel: getRandomNumber(),
-    q2percentageHappiness: getRandomPercentage(),
-    q2percentageSadness: getRandomPercentage(),
-    q2percentageAnger: getRandomPercentage(),
-    q2percentageFear: getRandomPercentage(),
-    q2percentageNeutral: getRandomPercentage(),
-    q2Sentiment: getRandomSentiment(),
-    q2HeartRate: getRandomNumber(),
-    q2OxygenLevel: getRandomNumber(),
-    q3percentageHappiness: getRandomPercentage(),
-    q3percentageSadness: getRandomPercentage(),
-    q3percentageAnger: getRandomPercentage(),
-    q3percentageFear: getRandomPercentage(),
-    q3percentageNeutral: getRandomPercentage(),
-    q3Sentiment: getRandomSentiment(),
-    q3HeartRate: getRandomNumber(),
-    q3OxygenLevel: getRandomNumber(),
-    q4percentageHappiness: getRandomPercentage(),
-    q4percentageSadness: getRandomPercentage(),
-    q4percentageAnger: getRandomPercentage(),
-    q4percentageFear: getRandomPercentage(),
-    q4percentageNeutral: getRandomPercentage(),
-    q4Sentiment: getRandomSentiment(),
-    q4HeartRate: getRandomNumber(),
-    q4OxygenLevel: getRandomNumber(),
-    q5percentageHappiness: getRandomPercentage(),
-    q5percentageSadness: getRandomPercentage(),
-    q5percentageAnger: getRandomPercentage(),
-    q5percentageFear: getRandomPercentage(),
-    q5percentageNeutral: getRandomPercentage(),
-    q5Sentiment: getRandomSentiment(),
-    q5HeartRate: getRandomNumber(),
-    q5OxygenLevel: getRandomNumber(),
-    q6percentageHappiness: getRandomPercentage(),
-    q6percentageSadness: getRandomPercentage(),
-    q6percentageAnger: getRandomPercentage(),
-    q6percentageFear: getRandomPercentage(),
-    q6percentageNeutral: getRandomPercentage(),
-    q6Sentiment: getRandomSentiment(),
-    q6HeartRate: getRandomNumber(),
-    q6OxygenLevel: getRandomNumber(),
-    q7percentageHappiness: getRandomPercentage(),
-    q7percentageSadness: getRandomPercentage(),
-    q7percentageAnger: getRandomPercentage(),
-    q7percentageFear: getRandomPercentage(),
-    q7percentageNeutral: getRandomPercentage(),
-    q7Sentiment: getRandomSentiment(),
-    q7HeartRate: getRandomNumber(),
-    q7OxygenLevel: getRandomNumber(),
-    q8percentageHappiness: getRandomPercentage(),
-    q8percentageSadness: getRandomPercentage(),
-    q8percentageAnger: getRandomPercentage(),
-    q8percentageFear: getRandomPercentage(),
-    q8percentageNeutral: getRandomPercentage(),
-    q8Sentiment: getRandomSentiment(),
-    q8HeartRate: getRandomNumber(),
-    q8OxygenLevel: getRandomNumber(),
-    q9percentageHappiness: getRandomPercentage(),
-    q9percentageSadness: getRandomPercentage(),
-    q9percentageAnger: getRandomPercentage(),
-    q9percentageFear: getRandomPercentage(),
-    q9percentageNeutral: getRandomPercentage(),
-    q9Sentiment: getRandomSentiment(),
-    q9HeartRate: getRandomNumber(),
-    q9OxygenLevel: getRandomNumber(),
-    q10percentageHappiness: getRandomPercentage(),
-    q10percentageSadness: getRandomPercentage(),
-    q10percentageAnger: getRandomPercentage(),
-    q10percentageFear: getRandomPercentage(),
-    q10percentageNeutral: getRandomPercentage(),
-    q10Sentiment: getRandomSentiment(),
-    q10HeartRate: getRandomNumber(),
-    q10OxygenLevel: getRandomNumber()
-  };
+//   const questions = {
+//     q1percentageHappiness: getRandomPercentage(),
+//     q1percentageSadness: getRandomPercentage(),
+//     q1percentageAnger: getRandomPercentage(),
+//     q1percentageFear: getRandomPercentage(),
+//     q1percentageNeutral: getRandomPercentage(),
+//     q1Sentiment: getRandomSentiment(),
+//     q1HeartRate: getRandomNumber(),
+//     q1OxygenLevel: getRandomNumber(),
+//     q2percentageHappiness: getRandomPercentage(),
+//     q2percentageSadness: getRandomPercentage(),
+//     q2percentageAnger: getRandomPercentage(),
+//     q2percentageFear: getRandomPercentage(),
+//     q2percentageNeutral: getRandomPercentage(),
+//     q2Sentiment: getRandomSentiment(),
+//     q2HeartRate: getRandomNumber(),
+//     q2OxygenLevel: getRandomNumber(),
+//     q3percentageHappiness: getRandomPercentage(),
+//     q3percentageSadness: getRandomPercentage(),
+//     q3percentageAnger: getRandomPercentage(),
+//     q3percentageFear: getRandomPercentage(),
+//     q3percentageNeutral: getRandomPercentage(),
+//     q3Sentiment: getRandomSentiment(),
+//     q3HeartRate: getRandomNumber(),
+//     q3OxygenLevel: getRandomNumber(),
+//     q4percentageHappiness: getRandomPercentage(),
+//     q4percentageSadness: getRandomPercentage(),
+//     q4percentageAnger: getRandomPercentage(),
+//     q4percentageFear: getRandomPercentage(),
+//     q4percentageNeutral: getRandomPercentage(),
+//     q4Sentiment: getRandomSentiment(),
+//     q4HeartRate: getRandomNumber(),
+//     q4OxygenLevel: getRandomNumber(),
+//     q5percentageHappiness: getRandomPercentage(),
+//     q5percentageSadness: getRandomPercentage(),
+//     q5percentageAnger: getRandomPercentage(),
+//     q5percentageFear: getRandomPercentage(),
+//     q5percentageNeutral: getRandomPercentage(),
+//     q5Sentiment: getRandomSentiment(),
+//     q5HeartRate: getRandomNumber(),
+//     q5OxygenLevel: getRandomNumber(),
+//     q6percentageHappiness: getRandomPercentage(),
+//     q6percentageSadness: getRandomPercentage(),
+//     q6percentageAnger: getRandomPercentage(),
+//     q6percentageFear: getRandomPercentage(),
+//     q6percentageNeutral: getRandomPercentage(),
+//     q6Sentiment: getRandomSentiment(),
+//     q6HeartRate: getRandomNumber(),
+//     q6OxygenLevel: getRandomNumber(),
+//     q7percentageHappiness: getRandomPercentage(),
+//     q7percentageSadness: getRandomPercentage(),
+//     q7percentageAnger: getRandomPercentage(),
+//     q7percentageFear: getRandomPercentage(),
+//     q7percentageNeutral: getRandomPercentage(),
+//     q7Sentiment: getRandomSentiment(),
+//     q7HeartRate: getRandomNumber(),
+//     q7OxygenLevel: getRandomNumber(),
+//     q8percentageHappiness: getRandomPercentage(),
+//     q8percentageSadness: getRandomPercentage(),
+//     q8percentageAnger: getRandomPercentage(),
+//     q8percentageFear: getRandomPercentage(),
+//     q8percentageNeutral: getRandomPercentage(),
+//     q8Sentiment: getRandomSentiment(),
+//     q8HeartRate: getRandomNumber(),
+//     q8OxygenLevel: getRandomNumber(),
+//     q9percentageHappiness: getRandomPercentage(),
+//     q9percentageSadness: getRandomPercentage(),
+//     q9percentageAnger: getRandomPercentage(),
+//     q9percentageFear: getRandomPercentage(),
+//     q9percentageNeutral: getRandomPercentage(),
+//     q9Sentiment: getRandomSentiment(),
+//     q9HeartRate: getRandomNumber(),
+//     q9OxygenLevel: getRandomNumber(),
+//     q10percentageHappiness: getRandomPercentage(),
+//     q10percentageSadness: getRandomPercentage(),
+//     q10percentageAnger: getRandomPercentage(),
+//     q10percentageFear: getRandomPercentage(),
+//     q10percentageNeutral: getRandomPercentage(),
+//     q10Sentiment: getRandomSentiment(),
+//     q10HeartRate: getRandomNumber(),
+//     q10OxygenLevel: getRandomNumber()
+//   };
 
-  return questions;
+//   return questions;
+// }
+
+// ----------------------------------Generate 10 random values for Heart Rate and Oxygen Level----------------------------------
+function generateRandomValues() {
+  for (let i = 0; i < 10; i++) {
+    HeartRate.push(Math.floor(Math.random() * (120 - 60 + 1)) + 60);
+    OxygenLevel.push(Math.floor(Math.random() * (120 - 80 + 1)) + 80);
+  }
 }
 
+let GADscore = 0;
 // ----------------------------------Store GAD7 Score----------------------------------
-
 app.post('/gadScore', async (req, res) => {
   try {
-    const { GADscore } = req.body;
-    const questions = generateRandomQuestions();
-    const patientID = userID;
-    // if patientID is already present in the database, update the GAD7 score
-    if (await PatientEvaluation.findOne({
-      patientID: userID
-    })) {
-      await PatientEvaluation.findOneAndUpdate({ patientID: userID }, { GADscore: req.body.GADscore });
-      return res.status(200).json({ message: 'GAD7 Score updated successfully' });
-    }
-    else {
-      const newMedicalRecord = new PatientEvaluation({ patientID, GADscore, questions, hasAnxiety: true });
-    await newMedicalRecord.save();
-    res.status(200).json({ message: 'GAD7 Score added successfully' });
-    }
-  } catch (err) {
+    // const {gadscore} = req.body;
+    // GADscore = gadscore;
+    GADscore = req.body.GADscore;
+    generateRandomValues();
+    res.status(200).json({ message: 'GAD7 stored to variable successfully' });
+  }
+  catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
+// app.post('/gadScore', async (req, res) => {
+//   try {
+//     const { GADscore } = req.body;
+// //    const questions = generateRandomQuestions();
+//     const patientID = userID;
+//     // if patientID is already present in the database, update the GAD7 score
+//     if (await PatientEvaluation.findOne({
+//       patientID: userID
+//     })) {
+//       await PatientEvaluation.findOneAndUpdate({ patientID: userID }, { GADscore: req.body.GADscore });
+//       return res.status(200).json({ message: 'GAD7 Score updated successfully' });
+//     }
+//     else {
+//       const newMedicalRecord = new PatientEvaluation({ patientID, GADscore, questions, hasAnxiety: true });
+//     await newMedicalRecord.save();
+//     res.status(200).json({ message: 'GAD7 Score added successfully' });
+//     }
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// });
 
 // -----------------------Patient Evaluation----------------------------------
 // Endpoint to handle POST requests to view report
@@ -289,10 +314,14 @@ app.post('/view-report', async (req, res) => {
 // ----------------------------------Storing Emotions----------------------------------
 app.post('/sendingEmotions', (req, res) => {
   const { frameResponses, transcriptResponse } = req.body;
-  const newEmotions = new Emotions({ patientID: userID, emotionsArray: frameResponses, Sentiment: transcriptResponse });
+  //const newEmotions = new Emotions({ patientID: userID, emotionsArray: frameResponses, Sentiment: transcriptResponse });
+  const newEmotions = new Emotions({ patientID: userID, GADscore: GADscore, emotionsArray: frameResponses, Sentiment: transcriptResponse, HeartRate: HeartRate, OxygenLevel: OxygenLevel });
   newEmotions.save()
     .then(() => {
       res.status(200).json({ message: 'Emotions added successfully' });
+      // Clear the arrays
+      HeartRate = [];
+      OxygenLevel = [];
     })
     .catch(err => {
       console.error(err);
