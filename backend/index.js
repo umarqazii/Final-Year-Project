@@ -6,7 +6,7 @@ const multer = require('multer');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const app = express();
-const { Patient, PatientEvaluation, Emotions, EncodedImages } = require('./Models/Database');
+const { Patient, PatientEvaluation, Emotions } = require('./Models/Database');
 
 const nodemailer = require('nodemailer');
 require("dotenv").config();
@@ -300,67 +300,10 @@ app.post('/sendingEmotions', (req, res) => {
     });
 });
 
-// ----------------------------------Storing Encoded Images----------------------------------
-
-// app.post('/sendingImages', (req, res) => {
-//   const { encodedimages } = req.body;
-//   const newImages = new EncodedImages({ patientID: userID, encodedImages: encodedimages });
-//   newImages.save()
-//     .then(() => {
-//       res.status(200).json({ message: 'Images added successfully' });
-//     })
-//     .catch(err => {
-//       console.error(err);
-//       res.status(500).json({ message: 'Internal Server Error' });
-//     });
-// });
-
-
-// app.listen(4000, () => {
-//   console.log('Server is running on port 4000');
-// });
-
-
-let accumulatedImages = []; // Array to accumulate complete images
-let accumulatedChunks = ''; // Initialize the variable
-app.post('/saveImageChunk', (req, res) => {
-    const { chunk } = req.body;
-    
-    accumulatedChunks += chunk;
-
-    res.status(200).json({ message: 'Image chunk received successfully' });
-});
-
-app.post('/saveImages', (req, res) => {
-    const { completeImage } = req.body;
-
-    // Accumulate complete images
-    accumulatedImages.push(accumulatedChunks);
-      accumulatedChunks='';
-    res.status(200).json({ message: 'Image added to accumulated images' });
-});
-
-app.post('/saveAccumulatedImages', (req, res) => {
-    // Assuming userID is defined elsewhere in your code
-    const newImages = new EncodedImages({ patientID: userID, encodedImages: accumulatedImages });
-    newImages.save()
-        .then(() => {
-            // Reset accumulated images array for future requests
-            accumulatedImages = [];
-            res.status(200).json({ message: 'Accumulated images saved successfully' });
-        })
-        .catch(err => {
-            console.error(err);
-            res.status(500).json({ message: 'Internal Server Error' });
-        });
-});
-
 
 app.listen(4000, () => {
-    console.log('Server is running on port 4000');
+  console.log('Server is running on port 4000');
 });
-
-
 
 
 // ----------------------------------Process Video----------------------------------
@@ -407,6 +350,3 @@ app.listen(4000, () => {
 //     console.error('Error processing video:', error);
 //   }
 // } );
-
-
-

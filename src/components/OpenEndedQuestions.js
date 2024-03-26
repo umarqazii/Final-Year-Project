@@ -18,7 +18,6 @@ function OpenEndedQuestions() {
     const [completed1, setCompleted1] = useState(false);
     const [frameResponses, setFrameResponses] = useState([]);
     const [transcriptResponse, setTranscriptResponse] = useState('');
-    const [encodedimages, setEncodedImages] = useState([]);
 
     useEffect(() => {
         let recognition; // Declare recognition variable in outer scope
@@ -26,15 +25,9 @@ function OpenEndedQuestions() {
 
         const captureAndSendFrame = async () => {
             const imageSrc = webcamRef.current.getScreenshot();
-        
+
             try {
                 const response = await axios.post('http://localhost:5000/save-and-analyze-frame', { frame: imageSrc });
-                //encode the image
-                const base64Image = imageSrc.split(',')[1];
-
-                //add encoded image to the array
-                setEncodedImages(prevImages => [...prevImages, base64Image]);
-
                 const emotion = response.data.emotion;
                 setFrameResponses(prevResponses => [...prevResponses, emotion]); // Add emotion to responses array
                 frameCount++; // Increment counter
@@ -141,69 +134,6 @@ function OpenEndedQuestions() {
         }
     };
 
-    // const sendEncodedImagestoBackend = async () => {
-    //     // Send encoded images to backend
-    //     try {
-    //         const response = await axios.post('http://localhost:4000/sendingImages', {
-    //             encodedimages: encodedimages
-    //         });
-    //         console.log('Images sent to backend:', response.data);
-    //     } catch (error) {
-    //         console.error('Error sending images to backend:', error);
-    //     }
-    // };
-
-
-
-    const sendImageChunk = async (chunk) => {
-        console.log("hello",totalChunks)
-        try {
-            const response = await axios.post('http://localhost:4000/saveImageChunk', { chunk });
-            console.log('Chunk sent to backend:', response.data);
-        } catch (error) {
-            console.error('Error sending chunk to backend:', error);
-        }
-    };
-    
-    const CHUNK_SIZE = 100000; // Adjust the chunk size as needed
-       let totalChunks;
-    const sendEncodedImagestoBackend = async () => {
-        // Iterate over each encoded image and send them one by one
-        for (const encodedImage of encodedimages) {
-            // Split the base64 image string into chunks
-             totalChunks = Math.ceil(encodedImage.length / CHUNK_SIZE);
-            for (let i = 0; i < totalChunks; i++) {
-                const start = i * CHUNK_SIZE;
-                const end = (i + 1) * CHUNK_SIZE;
-                const chunk = encodedImage.substring(start, end);
-    
-                // Send the chunk to the backend
-                await sendImageChunk(chunk);
-            }
-        
-    
-        // After sending all image chunks, trigger saving of accumulated images
-        try {
-            console.log("saving image")
-            const saveResponse = await axios.post('http://localhost:4000/saveImages');
-            console.log('Images saved to backend:', saveResponse.data);
-        } catch (error) {
-            console.error('Error saving images to backend:', error);
-        }
-
-    }
-
-      // After sending all image chunks, trigger saving of accumulated images
-      try {
-        console.log("saving images to mongodb")
-        const saveResponse = await axios.post('http://localhost:4000/saveAccumulatedImages');
-        console.log('Images saved to backend:', saveResponse.data);
-    } catch (error) {
-        console.error('Error saving images to backend:', error);
-    }
-
-    };
-
 
     return (
         <div className='App'>
@@ -227,18 +157,16 @@ function OpenEndedQuestions() {
 
             {/* Video element for displaying the user's camera feed */}
 
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Webcam
                     audio={false}
                     ref={webcamRef}
                     screenshotFormat="image/png"
-                    width="500"
-                    height="500"
                 />
                 {(completed && completed1) ? (
                     <div>
-                        <h2 style={{color: 'white'}}>Analysis completed.</h2>
-                        <button onClick={() => {sendEncodedImagestoBackend(); }}>Submit</button>
+                        <h2>Analysis completed.</h2>
+                        <button onClick={() => {sendtoBackend()}}>Submit</button>
 
                     </div>
                 ) : null}
