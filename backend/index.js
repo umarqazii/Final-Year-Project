@@ -295,23 +295,33 @@ app.post('/view-report', async (req, res) => {
 
   try {
     // Search the database for the patient with the provided ID
-    const patientReport = await PatientEvaluation.findOne({ patientID: patientID });
+    const patientReport = await Emotions.findOne({ patientID: patientID });
+    
+    //from the Patient collection, find the patient Name with the provided ID
+    const patientName = await Patient.findOne({ _id: patientID });
 
     if (!patientReport) {
       return res.status(404).json({ error: 'Patient not found' });
     }
 
+    //search the database for the patient with the provided ID and return only the patient name
+    res.status(200).json({ patientName: patientName.firstName, GADscore: patientReport.GADscore, emotionsArray: patientReport.emotionsArray, Sentiment: patientReport.Sentiment, HeartRate: patientReport.HeartRate, OxygenLevel: patientReport.OxygenLevel});
+
     // Send the GADscore in the response
     //res.status(200).json({ GADscore: patient.GADscore });
     // Send the entire patient object in the response
-    res.status(200).json(patientReport);
+    //res.status(200).json(patientReport);
+    
+    
+
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// ----------------------------------Storing Emotions----------------------------------
+// ----------------------------------Storing Emotions---------------------------------
 app.post('/sendingEmotions', (req, res) => {
   const { frameResponses, transcriptResponse } = req.body;
   //const newEmotions = new Emotions({ patientID: userID, emotionsArray: frameResponses, Sentiment: transcriptResponse });

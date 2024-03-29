@@ -1,47 +1,47 @@
 [
   {
     "question": "Make sure your Face is in the center of the frame",
-    "timeInSeconds": 5
+    "timeInSeconds": 6
   },
   {
     "question": "Do you experience breathing difficulty (eg, excessively rapid breathing, breathlessness in the absence of physical exertion) What sort of Situation can cause this?",
-    "timeInSeconds": 25
+    "timeInSeconds": 6
   },
   {
     "question": "What's something you've never told anyone about yourself, but you wish someone knew?",
-    "timeInSeconds": 30
+    "timeInSeconds": 6
   },
   {
     "question": "How does social pressure affect your relationships with friends and family?",
-    "timeInSeconds": 30
+    "timeInSeconds": 6
   },
   {
     "question": "Have you ever felt overwhelmed by the pressure to excel at work or in your studies?",
-    "timeInSeconds": 30
+    "timeInSeconds": 6
   },
   {
     "question": "Think about a decision you regret. What led you to make that choice?",
-    "timeInSeconds": 30
+    "timeInSeconds": 6
   },
   {
     "question": "Are there specific aspects of your future or career that cause you significant worry or stress?",
-    "timeInSeconds": 30
+    "timeInSeconds": 6
   },
   {
     "question": "Do you sometimes feel like your peers are better than you are in academics.",
-    "timeInSeconds": 30
+    "timeInSeconds": 6
   },
   {
     "question": "What strategies or techniques have you found helpful in managing intense emotional reactions? Which ones do you find less effective, and why?",
-    "timeInSeconds": 30
+    "timeInSeconds": 6
   },
   {
     "question": "What physical symptoms do you experience when you face performance-related stress?",
-    "timeInSeconds": 30
+    "timeInSeconds": 6
   },
   {
     "question": "Did you fall prey to Coronavirus? Can you describe any specific situations or challenges you've faced during this time?",
-    "timeInSeconds": 30
+    "timeInSeconds": 6
   }
  
 ]

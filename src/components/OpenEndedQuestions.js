@@ -4,6 +4,7 @@ import questions from './Questions.json';
 import PatientNavbar from './PatientNavbar';
 import HealthMonitor from './HealthMonitor';
 import Webcam from 'react-webcam';
+import { Toast } from 'react-bootstrap';
 
 function OpenEndedQuestions() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -28,9 +29,11 @@ function OpenEndedQuestions() {
             try {
                 const response = await axios.post('http://localhost:5000/save-and-analyze-frame', { frame: imageSrc });
                 const emotion = response.data.emotion;
+               
+
                 setFrameResponses(prevResponses => [...prevResponses, emotion]); // Add emotion to responses array
                 frameCount++; // Increment counter
-                if (frameCount === 150) setCompleted(true); // Check if all responses are received
+                if (frameCount === 33) setCompleted(true); // Check if all responses are received
             } catch (error) {
                 console.error('Error sending frame to backend:', error);
             }
@@ -57,10 +60,10 @@ function OpenEndedQuestions() {
                 setTranscript(accumulatedTranscript); // Update state with the accumulated transcript
                 console.log('Final Transcript:', accumulatedTranscript); // Log final transcript
 
-                // Send transcript to backend after 300 seconds
+                // Send transcript to backend after 66 seconds
                 setTimeout(() => {
                     sendTranscriptToBackend(accumulatedTranscript);
-                }, 300000);
+                }, 66000);
             };
 
             recognition.start();
@@ -80,13 +83,13 @@ function OpenEndedQuestions() {
 
         const intervalId = setInterval(() => {
             captureAndSendFrame();
-        }, 2000); // Capture frame and send it every 5 seconds
+        }, 2000); // Capture frame and send it every 2 seconds
 
         const timeoutId = setTimeout(() => {
             clearInterval(intervalId); // Stop capturing frames
             webcamRef.current.stream.getTracks().forEach(track => track.stop()); // Stop the webcam stream
             if (recognition) recognition.stop(); // Stop speech recognition if it's defined
-        }, 300000); // Stop after 30 seconds
+        }, 66000); // Stop after 30 seconds
 
         startSpeechRecognition();
 
@@ -128,6 +131,8 @@ function OpenEndedQuestions() {
                 transcriptResponse: transcriptResponse
             });
             console.log('Emotions sent to backend:', response.data);
+            //display a successful toast message
+            window.location.href = '/patienthome';
         } catch (error) {
             console.error('Error sending emotions to backend:', error);
         }
@@ -156,7 +161,7 @@ function OpenEndedQuestions() {
 
             {/* Video element for displaying the user's camera feed */}
 
-            <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
+            <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
                 <Webcam
                     audio={false}
                     ref={webcamRef}
@@ -166,8 +171,20 @@ function OpenEndedQuestions() {
                 />
                 {(completed && completed1) ? (
                     <div>
-                        <h2 style={{fontFamily: 'Audiowide, sans-serif',color: 'white'}}>Analysis completed</h2>
-                        <button onClick={() => {sendtoBackend()}}>Submit</button>
+                        <h2 style={{ fontFamily: 'Audiowide, sans-serif', color: 'white' }}>Analysis completed</h2>
+                        <button onClick={() => { sendtoBackend() }} style={{
+                            backgroundColor: '#ffffff',     // White background
+                            color: '#000000',               // Black text
+                            padding: '10px 20px',           // Padding
+                            marginBottom: '20px',           // Margin bottom
+                            border: 'none',                 // No border
+                            borderRadius: '5px',            // Rounded corners
+                            cursor: 'pointer',              // Cursor on hover
+                            fontSize: '16px',               // Font size
+                            fontWeight: 'bold',             // Bold text
+                            transition: 'background-color 0.3s ease', // Smooth transition on hover
+                            boxShadow: '0 0 5px rgba(0, 0, 0, 0.2)',   // Shadow effect
+                        }}>Submit</button>
 
                     </div>
                 ) : null}
