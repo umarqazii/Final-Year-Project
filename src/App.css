@@ -106,4 +106,9 @@ overflow-x: hidden; /* Prevent horizontal scrollbar */
   margin-bottom: 10px;
 }
 
+.mb-3:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 5px 15px rgba(143, 142, 142, 0.3);
+  background-color: #232323;
+}
 

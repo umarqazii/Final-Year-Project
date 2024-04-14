@@ -129,7 +129,8 @@ function OpenEndedQuestions() {
             const response = await axios.post('http://localhost:4000/sendingEmotions', {
                 frameResponses: frameResponses,
                 transcriptResponse: transcriptResponse
-            });
+            }
+        );
             console.log('Emotions sent to backend:', response.data);
             //display a successful toast message
             window.location.href = '/patienthome';

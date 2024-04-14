@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Typed from 'typed.js';
+import { toast, ToastContainer } from 'react-toastify';
 import {
     MDBContainer,
     MDBRow,
@@ -29,18 +30,33 @@ function Login() {
       .then((res) => {
         console.log(res);
 
-        if (res.data.isPsychologist) {
-          // Admin login
-          window.location.href = '/psychologisthome';
-        } else {
-          // User login
-          localStorage.setItem('token', res.data.token);
-          localStorage.setItem('user', JSON.stringify(res.data.user));
-          window.location.href = '/patienthome';
-        }
+        //display a successful toast message
+        toast.success('Login Successful!', {
+          autoClose: 1000, // Close the toast after 2 seconds
+          onClose: () => {
+            if (res.data.isPsychologist) {
+              // Admin login
+              window.location.href = '/psychologisthome';
+            } else {
+              // User login
+              localStorage.setItem('token', res.data.token);
+              localStorage.setItem('user', JSON.stringify(res.data.user));
+              window.location.href = '/patienthome';
+            }
+          }
+        });
+
+        
       })
       .catch((err) => {
         console.log(err);
+        //display an error toast message
+        toast.error('Invalid username or password!', {
+          autoClose: 2000, // Close the toast after 2 seconds
+          onClose: () => {
+            window.location.reload();
+          }
+        });
       });
 
   };
@@ -94,6 +110,7 @@ function Login() {
         </MDBCol>
       </MDBRow>
     </MDBContainer>
+    <ToastContainer />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import PsychologistNavbar from "./PsychologistNavbar";
 import Button from 'react-bootstrap/Button';
@@ -14,7 +15,8 @@ function PsychologistPatientProfiles() {
   const [medicalReport, setMedicalReport] = useState(null);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [showMedicalInfoModal, setShowMedicalInfoModal] = useState(false);
-  const [medicalInfo, setMedicalInfo] = useState(null);
+  let [medicalInfo, setMedicalInfo] = useState(null);
+  //const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch all patients
@@ -34,8 +36,23 @@ function PsychologistPatientProfiles() {
     axios.post('http://localhost:4000/view-report', { patientID })
       .then(response => {
         setMedicalInfo(response.data);
-        //scroll to the medical report viewer component
-        window.scrollTo(0, document.body.scrollHeight);
+        // medicalInfo = response.data;
+        // console.log(medicalInfo);
+        // // navigate to medical report viewer with medicalInfo as props state
+        // navigate('/medical-report-viewer', { state: { medicalInfo } });
+
+        // scroll down to the medical report viewer component
+        console.log(response.data);
+        document.getElementById('medical-report-viewer').scrollIntoView({ behavior: 'smooth' });
+
+      })
+      .catch(error => console.error(error));
+  };
+
+  const fetchAnxietyAnalysis = (patientID) => {
+    axios.post('http://localhost:8888/anxiety-analysis', { patientID })
+      .then(response => {
+        console.log(response.data);
       })
       .catch(error => console.error(error));
   };
@@ -44,9 +61,9 @@ function PsychologistPatientProfiles() {
   const handleViewReport = (patientID) => {
     setSelectedPatient(patientID);
     fetchMedicalReport(patientID);
+    fetchAnxietyAnalysis(patientID);
+    
   };
-
- 
 
   return (
     <div className="App">
@@ -84,7 +101,10 @@ function PsychologistPatientProfiles() {
           </Card>
         ))}
       </div>
+      <div id="medical-report-viewer">
       <MedicalReportViewer medicalInfo={medicalInfo} />
+       </div> {/* anchor tag to scroll down to this div */}
+      
     </div>
   );
 }

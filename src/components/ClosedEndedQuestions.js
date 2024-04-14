@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PatientNavbar from './PatientNavbar';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import '../App.css';
 
@@ -29,28 +31,40 @@ function ClosedEndedQuestions() {
             })
             .then((res) => {
                 console.log("Response:", res.data); // Log the response data
-                // Reload the page
-                window.location.reload();
-                // Handle success, such as displaying a success message to the user
+            
+                // Display a success toast message
+                toast.success('GAD Score submitted successfully!', {
+                    autoClose: 5000, // Close the toast after 2 seconds
+                    onClose: () => {
+                        // Redirect to the next page after the toast is closed
+                        window.location.href = "/OpenEndedQuestions";
+                    }
+                });
             })
             .catch((err) => {
                 console.error("Error:", err); // Log the error for debugging
-                // Handle error, such as displaying an error message to the user
+                // Display an error toast message
+                toast.error('Failed to submit GAD Score!', { autoClose: 5000,
+                onClose: () => {
+                    // Redirect to the next page after the toast is closed
+                    window.location.reload();
+                }
+                });
             });
     };
 
     return (
         <div className='App'>
             <PatientNavbar />
-            <div className="container mt-4">
-                <div className="card" style={{ maxWidth: '60%', margin: '0 auto' }}>
+            <div className="container mt-4" >
+                <div className="card" style={{ maxWidth: '60%', margin: '0 auto', backgroundColor: 'black', borderWidth: '1px', borderColor: 'grey' }}>
                     <div className="card-body">
-                        <h3 className="card-title mb-4" style={{ color: "black" }}>Closed-Ended Questions</h3>
-                        <form>
+                        <h3 className="card-title mb-4" style={{ color: "white", fontWeight: 'bolder'}}>Closed-Ended Questions</h3>
+                        <form >
                             {questions.map((question, index) => (
-                                <div key={index} className="mb-3">
+                                <div key={index} className="mb-3" style={{ color: 'white', transition: 'transform 0.3s' }}>
                                     <p>{question}</p>
-                                    <div className="form-check form-check-inline">
+                                    <div className="form-check form-check-inline" >
                                         <input
                                             type="radio"
                                             id={`response-${index}-0`}
@@ -114,18 +128,17 @@ function ClosedEndedQuestions() {
                         </form>
 
                         <div className="text-center">
-                            <button style={{marginBottom: '5px'}} className="btn btn-primary" onClick={handleSubmit}>
-                                Submit
+                            <button  className="btn btn-outline-light btn-lg" style={{ fontFamily: 'Audiowide, sans-serif', marginBottom: '5px' }} onClick={handleSubmit}>
+                                Submit and Move to Open-Ended Questions
                             </button><br></br>
-                            <Link  to="/OpenEndedQuestions" className="btn btn-primary">
-                                Proceed to Open-ended Questions
-                            </Link>
+                            
                         </div>
                     </div>
                 </div>
             </div>
             <p style={{color: "white"}}>GAD-7 Standard Questionnaire</p>
-            <a href='https://adaa.org/sites/default/files/GAD-7_Anxiety-updated_0.pdf'>Source</a>
+            <a target='blank' href='https://adaa.org/sites/default/files/GAD-7_Anxiety-updated_0.pdf'>Source</a>
+            <ToastContainer />
         </div>
     );
 }

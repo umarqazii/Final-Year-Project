@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast, ToastContainer } from 'react-toastify';
 import '../App.css';
 import axios from "axios";
 import PsychologistNavbar from "./PsychologistNavbar";
@@ -28,6 +29,12 @@ function PsychologistRegisterPatient() {
             })
             .then((res) => {
                 console.log(res);
+                
+                //display a successful toast message
+                toast.success('Patient Registered Successfully!', {
+                    autoClose: 3000, // Close the toast after 2 seconds
+                });
+
                 //reload the page
                 window.location.reload();
                 // Handle success, such as displaying a success message to the user
@@ -169,7 +176,7 @@ function PsychologistRegisterPatient() {
                     </button>
                 </form>
             </div>
-
+            <ToastContainer />
         </div>
     );
 }
