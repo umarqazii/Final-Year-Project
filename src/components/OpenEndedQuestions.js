@@ -29,7 +29,7 @@ function OpenEndedQuestions() {
             try {
                 const response = await axios.post('http://localhost:5000/save-and-analyze-frame', { frame: imageSrc });
                 const emotion = response.data.emotion;
-               
+
 
                 setFrameResponses(prevResponses => [...prevResponses, emotion]); // Add emotion to responses array
                 frameCount++; // Increment counter
@@ -130,7 +130,7 @@ function OpenEndedQuestions() {
                 frameResponses: frameResponses,
                 transcriptResponse: transcriptResponse
             }
-        );
+            );
             console.log('Emotions sent to backend:', response.data);
             //display a successful toast message
             window.location.href = '/patienthome';
@@ -145,55 +145,56 @@ function OpenEndedQuestions() {
             <PatientNavbar />
 
             <h1 style={{ fontFamily: 'Audiowide, sans-serif', color: 'white', marginTop: '30px' }}>Open-Ended Question</h1>
-
-            <div>
-                <h2 style={{ fontFamily: ' sans-serif', color: 'white', marginTop: '20px' }}>
-                    Question {currentQuestionIndex} of {questions.length - 1}
-                </h2>
-                <p style={{ color: 'white' }}>{questions[currentQuestionIndex].question}</p>
+            <div className='container' style={{ backgroundColor: 'grey', borderRadius: '15px', paddingBottom: '15px' }}>
                 <div>
-                    {isLastQuestion ? (
-                        <p style={{ color: 'red' }}>Time's Up!</p>
-                    ) : (
-                        <p style={{ color: 'white' }}>Time Remaining: {remainingTime} seconds</p>
-                    )}
-                </div>
-            </div>
-
-            {/* Video element for displaying the user's camera feed */}
-
-            <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
-                <Webcam
-                    audio={false}
-                    ref={webcamRef}
-                    screenshotFormat="image/png"
-                    width="400"
-                    height="400"
-                />
-                {(completed && completed1) ? (
+                    <h2 style={{ fontFamily: ' sans-serif', color: 'white', marginTop: '20px' }}>
+                        Question {currentQuestionIndex} of {questions.length - 1}
+                    </h2>
+                    <p style={{ color: 'white', fontWeight: 'bold' }}>{questions[currentQuestionIndex].question}</p>
                     <div>
-                        <h2 style={{ fontFamily: 'Audiowide, sans-serif', color: 'white' }}>Analysis completed</h2>
-                        <button onClick={() => { sendtoBackend() }} style={{
-                            backgroundColor: '#ffffff',     // White background
-                            color: '#000000',               // Black text
-                            padding: '10px 20px',           // Padding
-                            marginBottom: '20px',           // Margin bottom
-                            border: 'none',                 // No border
-                            borderRadius: '5px',            // Rounded corners
-                            cursor: 'pointer',              // Cursor on hover
-                            fontSize: '16px',               // Font size
-                            fontWeight: 'bold',             // Bold text
-                            transition: 'background-color 0.3s ease', // Smooth transition on hover
-                            boxShadow: '0 0 5px rgba(0, 0, 0, 0.2)',   // Shadow effect
-                        }}>Submit</button>
-
+                        {isLastQuestion ? (
+                            <p style={{ color: 'red' }}>Time's Up!</p>
+                        ) : (
+                            <p style={{ color: 'white' }}>Time Remaining: {remainingTime} seconds</p>
+                        )}
                     </div>
-                ) : null}
+                </div>
 
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                {/* Video element for displaying the user's camera feed */}
 
-                <HealthMonitor />
+                <div style={{ display: 'flex',  flexDirection: 'row', justifyContent: 'space-evenly', alignItems:'center' }}>
+                    <Webcam
+                        audio={false}
+                        ref={webcamRef}
+                        screenshotFormat="image/png"
+                        width="500"
+                        height="350"
+                    />
+                    {(completed && completed1) ? (
+                        <div>
+                            <h2 style={{ fontFamily: 'Audiowide, sans-serif', color: 'white' }}>Analysis completed</h2>
+                            <button onClick={() => { sendtoBackend() }} style={{
+                                backgroundColor: '#ffffff',     // White background
+                                color: '#000000',               // Black text
+                                padding: '10px 20px',           // Padding
+                                marginBottom: '20px',           // Margin bottom
+                                border: 'none',                 // No border
+                                borderRadius: '5px',            // Rounded corners
+                                cursor: 'pointer',              // Cursor on hover
+                                fontSize: '16px',               // Font size
+                                fontWeight: 'bold',             // Bold text
+                                transition: 'background-color 0.3s ease', // Smooth transition on hover
+                                boxShadow: '0 0 5px rgba(0, 0, 0, 0.2)',   // Shadow effect
+                            }}>Submit</button>
+
+                        </div>
+                    ) : null}
+
+                
+                <div>
+                    <HealthMonitor />
+                </div>
+                </div>
             </div>
         </div>
     );
