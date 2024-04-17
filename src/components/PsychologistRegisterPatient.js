@@ -32,16 +32,27 @@ function PsychologistRegisterPatient() {
                 
                 //display a successful toast message
                 toast.success('Patient Registered Successfully!', {
-                    autoClose: 3000, // Close the toast after 2 seconds
+                    autoClose: 2000, // Close the toast after 2 seconds
+                    onClose: () => {
+                        // Redirect to the home page after the toast is closed
+                        window.location.reload();
+                    }
                 });
 
                 //reload the page
-                window.location.reload();
+                
                 // Handle success, such as displaying a success message to the user
             })
             .catch((err) => {
                 console.error(err);
                 // Handle error, such as displaying an error message to the user
+                toast.error('Error Registering Patient!', {
+                    autoClose: 2000, // Close the toast after 2 seconds
+                    onClose: () => {
+                        // Redirect to the home page after the toast is closed
+                        window.location.reload();
+                    }
+                });
             });
         }
     };
@@ -55,7 +66,7 @@ function PsychologistRegisterPatient() {
                 <form
                     onSubmit={handleSubmit}
                     style={{
-                        maxWidth: '400px',
+                        maxWidth: '800px',
                         margin: '0 auto',
                         padding: '20px',
                         border: '1px solid #ccc',

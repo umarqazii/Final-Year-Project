@@ -34,7 +34,7 @@ function ClosedEndedQuestions() {
             
                 // Display a success toast message
                 toast.success('GAD Score submitted successfully!', {
-                    autoClose: 5000, // Close the toast after 2 seconds
+                    autoClose: 3000, // Close the toast after 2 seconds
                     onClose: () => {
                         // Redirect to the next page after the toast is closed
                         window.location.href = "/OpenEndedQuestions";
@@ -60,11 +60,15 @@ function ClosedEndedQuestions() {
                 <div className="card" style={{ maxWidth: '60%', margin: '0 auto', backgroundColor: 'black', borderWidth: '1px', borderColor: 'grey' }}>
                     <div className="card-body">
                         <h3 className="card-title mb-4" style={{ color: "white", fontWeight: 'bolder'}}>Closed-Ended Questions</h3>
+                        <i><b><p style={{color: 'white'}}>Over the last two weeks, how often have you been bothered by the following problems?</p></b></i>
+                        <hr style={{color:'white'}} />
                         <form >
                             {questions.map((question, index) => (
                                 <div key={index} className="mb-3" style={{ color: 'white', transition: 'transform 0.3s' }}>
                                     <p>{question}</p>
+                                    Not at all &nbsp;&nbsp;&nbsp;&nbsp;
                                     <div className="form-check form-check-inline" >
+                                    
                                         <input
                                             type="radio"
                                             id={`response-${index}-0`}
@@ -74,6 +78,7 @@ function ClosedEndedQuestions() {
                                             onChange={() => handleChange(index, "0")}
                                             className="form-check-input"
                                         />
+                                        
                                         <label htmlFor={`response-${index}-0`} className="form-check-label">
                                             0
                                         </label>
@@ -120,8 +125,10 @@ function ClosedEndedQuestions() {
                                         <label htmlFor={`response-${index}-3`} className="form-check-label">
                                             3
                                         </label>
+                                        &nbsp;&nbsp;&nbsp;&nbsp; Almost every day
                                     </div>
                                     <hr className="my-2" />
+                                    
                                 </div>
 
                             ))}
@@ -143,13 +150,13 @@ function ClosedEndedQuestions() {
     );
 }
 const questions = [
-    "Feeling nervous, anxious, or on edge",
-    "Not being able to stop or control worrying",
-    "Worrying too much about different things",
-    "Trouble relaxing",
-    "Being so restless that it is hard to sit still",
-    "Becoming easily annoyed or irritable",
-    "Feeling afraid as if something awful might happen",
+    "Q: Feeling nervous, anxious, or on edge",
+    "Q: Not being able to stop or control worrying",
+    "Q: Worrying too much about different things",
+    "Q: Trouble relaxing",
+    "Q: Being so restless that it is hard to sit still",
+    "Q: Becoming easily annoyed or irritable",
+    "Q: Feeling afraid as if something awful might happen",
 ];
 export default ClosedEndedQuestions;
 

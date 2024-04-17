@@ -4,7 +4,8 @@ import questions from './Questions.json';
 import PatientNavbar from './PatientNavbar';
 import HealthMonitor from './HealthMonitor';
 import Webcam from 'react-webcam';
-import { Toast } from 'react-bootstrap';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function OpenEndedQuestions() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -133,7 +134,13 @@ function OpenEndedQuestions() {
             );
             console.log('Emotions sent to backend:', response.data);
             //display a successful toast message
-            window.location.href = '/patienthome';
+            toast.success('Evaluation Successful!', {
+                autoClose: 3000, // Close the toast after 2 seconds
+                onClose: () => {
+                    // Redirect to the next page after the toast is closed
+                    window.location.href = "/psychologisthome";
+                }
+            });
         } catch (error) {
             console.error('Error sending emotions to backend:', error);
         }
@@ -196,6 +203,7 @@ function OpenEndedQuestions() {
                 </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }

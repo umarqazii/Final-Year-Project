@@ -88,16 +88,18 @@ function HealthMonitor() {
     // console.log('Average Oxygen Level:', averageOxygenLevel);
 
     return (
-        <div className='HealthMonitorBox' style={{marginTop: '2px',padding: '20px',height: '50px',width: '100%',height: '250px',display: 'flex',flexDirection: 'row',justifyContent: 'space-between'}}>
+        
+        <div className='HealthMonitorBox' style={{marginTop: '2px',padding: '20px',height: '50px',width: '100%',height: '250px',display: 'flex',flexDirection: 'row',justifyContent: 'space-between', backgroundColor: 'grey'}}>
             <div className='heartratebox' style={{padding: '20px',height: '50px',backgroundColor: 'white' ,width: '80%',height: '150px'}}>
                 <img id='heartpic' src={heartRatePic} alt="Heart Rate" style={{ width: '5%' }} />
                 <h3>{averageHeartRate.toFixed(2)} BPM</h3>
             </div>
-            <div className='oxygenlevelbox' style={{padding: '20px',height: '50px',backgroundColor: 'grey',width: '80%',height: '150px'}}>
+            <div className='oxygenlevelbox' style={{padding: '20px',height: '50px',backgroundColor: '#fff4c2',width: '80%',height: '150px'}}>
                 <img id='oxygenpic' src={oxygenLevelPic} alt="Oxygen Level" style={{ width: '5%' }} />
                 <h3>{averageOxygenLevel.toFixed(2)} %</h3>
             </div>
         </div>
+       
     );
 }
 
