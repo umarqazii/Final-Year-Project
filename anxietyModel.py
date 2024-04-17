@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from pymongo import MongoClient
 from flask_cors import CORS
 import csv
+import random
 import os
 from bson import ObjectId
 from dotenv import load_dotenv
@@ -97,6 +98,7 @@ input_data = {
 }
 '''
 input_data = []
+output_data = []
 
 def get_input_data():
     input_data.clear()
@@ -123,7 +125,39 @@ def get_input_data():
     print("Data loaded successfully!")
     print(input_data)
 
+'''
+Note for Dani: 
+- input_data is a list of dictionaries where each dictionary represents a row in the CSV file
+- input_data bilkul usi tarah values store kr rha hai jesay test.ipynb mein store hai in the last cell. input_data[0], input_data[1] etc display kara k dekh lay beshak
+- hum test.ipynb mein jo code likha hai woh yahan likhna hai anxiety analysis k liye
+- test.ipynb mein hum sirf 1 row de rahay thay tou humein 1 Yes/No output mil raha tha. Yahan hum 10 rows de rahay hain tou humein 10 Yes/No outputs chahiye
+- filhal meinay output_data array mein randomly Yes/No values store kar di hain jo populate_output_data() function k through hua hai
+- tu nay iss ki jaga asal mein 10 rows ki 10 Yes/No values calculate karni hain.
+- output_data array mein 10 Yes/No values store krni hain
+- analyze_output_data() function mein output_data array pass karna hai aur woh function return karega k patient ko anxiety hai ya nahi
+- baaqi database mein store krnay k liye bhi pipeline tyaar hai. bus tu nay Model say 10 Yes/No values leni hain
+'''
 
+def populate_output_data():
+    output_data.clear()
+    options = ["Yes", "No"]
+    for _ in range(10):  # Change the range to whatever length you desire
+        output_data.append(random.choice(options))
+    return output_data
+
+
+def analyze_output_data(output):
+    count_yes = output.count("Yes")
+    count_no = output.count("No")
+    
+    if count_yes > 5:
+        return "Yes"
+    elif count_no > 5:
+        return "No"
+    else:
+        return "Undetermined"
+
+    
 
 
 @app.route('/anxiety-analysis', methods=['POST'])
@@ -148,6 +182,16 @@ def anxiety_analysis():
 
     # Get the first 10 rows from the CSV file
     get_input_data()
+
+    output_data = populate_output_data()
+    print(output_data)
+
+    result = analyze_output_data(output_data)
+    print(result)
+
+    # Write the result in the database. The result will be used to determine if the patient has anxiety or not
+    # find the patient using the patientID and update the hasAnxiety field with the result
+    collection.find_one_and_update({'patientID': patientID}, {'$set': {'hasAnxiety': result}})
 
     # Return success message
     return jsonify({'success': 'Data written to CSV successfully'})

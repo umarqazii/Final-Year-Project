@@ -234,7 +234,7 @@ let Emotions = new Schema({
   Sentiment: { type: String },
   HeartRate: { type: Array },
   OxygenLevel: { type: Array },
-  hasAnxiety: { type: Boolean},
+  hasAnxiety: { type: String},
 }, {
   collection: 'emotions'
 });

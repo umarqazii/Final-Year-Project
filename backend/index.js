@@ -305,7 +305,7 @@ app.post('/view-report', async (req, res) => {
     }
 
     //search the database for the patient with the provided ID and return only the patient name
-    res.status(200).json({ patientName: patientName.firstName, GADscore: patientReport.GADscore, emotionsArray: patientReport.emotionsArray, Sentiment: patientReport.Sentiment, HeartRate: patientReport.HeartRate, OxygenLevel: patientReport.OxygenLevel});
+    res.status(200).json({ patientName: patientName.firstName, GADscore: patientReport.GADscore, emotionsArray: patientReport.emotionsArray, Sentiment: patientReport.Sentiment, HeartRate: patientReport.HeartRate, OxygenLevel: patientReport.OxygenLevel, hasAnxiety: patientReport.hasAnxiety});
 
     // Send the GADscore in the response
     //res.status(200).json({ GADscore: patient.GADscore });

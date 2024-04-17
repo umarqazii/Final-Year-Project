@@ -135,6 +135,8 @@ function MedicalReportViewer({ medicalInfo }) {
           <hr />
           <p><b>Sentiment:</b> {medicalInfo.Sentiment}</p>
           <hr />
+          <p><b>Final Anxiety Diagnosis:</b> &nbsp;{medicalInfo.hasAnxiety}</p>
+          <hr />
           {/* Display the bar chart */}
           {Object.keys(emotionFrequencies).length > 0 && (
             <CanvasJSChart options={emotionOptions} />

@@ -6,6 +6,8 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import cardimg from '../assets/profile.png';
 import MedicalReportViewer from './MedicalReportViewer';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import '../App.css';
 
@@ -43,7 +45,7 @@ function PsychologistPatientProfiles() {
 
         // scroll down to the medical report viewer component
         console.log(response.data);
-        document.getElementById('medical-report-viewer').scrollIntoView({ behavior: 'smooth' });
+        
 
       })
       .catch(error => console.error(error));
@@ -60,8 +62,17 @@ function PsychologistPatientProfiles() {
   // Function to handle view report button click
   const handleViewReport = (patientID) => {
     setSelectedPatient(patientID);
-    fetchMedicalReport(patientID);
     fetchAnxietyAnalysis(patientID);
+
+    // display a toast message to wait for the report to load
+    toast.info('Please wait while the report is being loaded...', {
+      autoClose: 3000, // Close the toast after 2 seconds
+      onClose: () => {
+
+    fetchMedicalReport(patientID);
+    document.getElementById('medical-report-viewer').scrollIntoView({ behavior: 'smooth' });
+      }
+    });
     
   };
 
@@ -104,6 +115,7 @@ function PsychologistPatientProfiles() {
       <div id="medical-report-viewer">
       <MedicalReportViewer medicalInfo={medicalInfo} />
        </div> {/* anchor tag to scroll down to this div */}
+      <ToastContainer />
       
     </div>
   );
