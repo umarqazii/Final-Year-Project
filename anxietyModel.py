@@ -146,7 +146,7 @@ Note for Dani:
 def populate_output_data():
     output_data.clear()
     # Load the trained model
-    model = joblib.load('model.pkl')  # Replace 'model.pkl' with the path to your trained model file
+    model = joblib.load('anxiety_prediction_model.pkl')  # Replace 'model.pkl' with the path to your trained model file
     
     # Define the column transformer for one-hot encoding
     categorical_cols = ['Emotion1', 'Emotion2', 'Emotion3', 'Emotion4', 'Emotion5', 'Emotion6', 'Emotion7', 'Emotion8', 'Emotion9', 'Emotion10', 'Sentiment']
