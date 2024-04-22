@@ -19,7 +19,7 @@ const upload = multer();
 
 mongoose.connect(process.env.MONG_URI)
   .then(() => console.log("MongoDB connection established successfully"))
-  .catch((err) => console.log("MongoDB connection error:", err));
+  .catch((err) => console.log(err));
 
 // ----------------------------------Functions to Set username and password----------------------------------
 
@@ -352,8 +352,8 @@ app.get('/sensorDataGet', (req, res) => {
 });
 
 
-app.listen(4000, () => {
-  console.log('Server is running on port 4000');
+app.listen(2000, () => {
+  console.log('Server is running on port 2000');
 });
 
 

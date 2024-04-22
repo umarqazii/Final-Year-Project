@@ -149,26 +149,29 @@ def populate_output_data():
     model = joblib.load('anxiety_prediction_model.pkl')  # Replace 'model.pkl' with the path to your trained model file
     
     # Define the column transformer for one-hot encoding
-    categorical_cols = ['Emotion1', 'Emotion2', 'Emotion3', 'Emotion4', 'Emotion5', 'Emotion6', 'Emotion7', 'Emotion8', 'Emotion9', 'Emotion10', 'Sentiment']
-    preprocessor = ColumnTransformer(
-        transformers=[('cat', OneHotEncoder(), categorical_cols)],
-        remainder='passthrough'
-    )
+    # categorical_cols = ['Emotion1', 'Emotion2', 'Emotion3', 'Emotion4', 'Emotion5', 'Emotion6', 'Emotion7', 'Emotion8', 'Emotion9', 'Emotion10', 'Sentiment']
+    # preprocessor = ColumnTransformer(
+    #     transformers=[('cat', OneHotEncoder(), categorical_cols)],
+    #     remainder='passthrough'
+    # )
     
-    for data_row in input_data:
-        # Preprocess the input data
-        input_data_row = [data_row['Emotion1'], data_row['Emotion2'], data_row['Emotion3'], data_row['Emotion4'], data_row['Emotion5'],
-                          data_row['Emotion6'], data_row['Emotion7'], data_row['Emotion8'], data_row['Emotion9'], data_row['Emotion10'],
-                          data_row['Sentiment'], data_row['GADscore'], data_row['HeartRate'], data_row['OxygenLevel']]
-        input_data_encoded = preprocessor.transform([input_data_row])
+    # for data_row in input_data:
+    #     # Preprocess the input data
+    #     input_data_row = [data_row['Emotion1'], data_row['Emotion2'], data_row['Emotion3'], data_row['Emotion4'], data_row['Emotion5'],
+    #                       data_row['Emotion6'], data_row['Emotion7'], data_row['Emotion8'], data_row['Emotion9'], data_row['Emotion10'],
+    #                       data_row['Sentiment'], data_row['GADscore'], data_row['HeartRate'], data_row['OxygenLevel']]
+    #     input_data_encoded = preprocessor.transform([input_data_row])
         
         # Make predictions using the trained model
-        prediction = model.predict(input_data_encoded)
+        # prediction = model.predict(input_data_encoded)
         
         # Append the prediction to the output data
-        output_data.append(prediction[0])  # Assuming prediction is a list with a single element
-        
+        #output_data.append(prediction[0])  # Assuming prediction is a list with a single element
+    options = ["Yes", "No"]
+    for _ in range(10):  # Change the range to whatever length you desire
+        output_data.append(random.choice(options))
     return output_data
+        
 
 
 

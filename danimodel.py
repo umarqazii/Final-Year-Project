@@ -130,7 +130,7 @@ def anxiety_analysis():
 
     # Get the first 10 rows from the CSV file
     get_input_data()
-
+    print("hello")
     output_data = populate_output_data()
     print(output_data)
 
