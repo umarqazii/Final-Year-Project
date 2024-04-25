@@ -46,7 +46,7 @@ void setup() {
   // Serial.setDebugOutput(true);
 
   WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP("Fast-3FA", "waseemchachu");
+  WiFiMulti.addAP("EVO-Charji-85EC", "C3y35F2x");
   //WiFiMulti.addAP("Fast 4F", "Fast@Students321");
   // Initialize sensor
   if (!particleSensor.begin(Wire, I2C_SPEED_FAST))  //Use default I2C port, 400kHz speed
@@ -114,7 +114,7 @@ void pushDataServer(float data) {
   HTTPClient http;
 
   //Serial.print("[HTTP] begin...\n");
-  if (http.begin(client, "http://192.168.250.40:2000/sensorDataStore?heartrate=" + String(data))) {  // HTTP
+  if (http.begin(client, "http://192.168.1.188:2000/sensorDataStore?heartrate=" + String(data))) {  // HTTP
 
 
     //Serial.print("[HTTP] GET...\n");
