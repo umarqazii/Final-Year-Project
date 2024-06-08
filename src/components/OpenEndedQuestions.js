@@ -34,7 +34,7 @@ function OpenEndedQuestions() {
 
                 setFrameResponses(prevResponses => [...prevResponses, emotion]); // Add emotion to responses array
                 frameCount++; // Increment counter
-                if (frameCount === 33) setCompleted(true); // Check if all responses are received
+                if (frameCount === 165) setCompleted(true); // Check if all responses are received
             } catch (error) {
                 console.error('Error sending frame to backend:', error);
             }
@@ -61,10 +61,10 @@ function OpenEndedQuestions() {
                 setTranscript(accumulatedTranscript); // Update state with the accumulated transcript
                 console.log('Final Transcript:', accumulatedTranscript); // Log final transcript
 
-                // Send transcript to backend after 66 seconds
+                // Send transcript to backend after 330 seconds
                 setTimeout(() => {
                     sendTranscriptToBackend(accumulatedTranscript);
-                }, 66000);
+                }, 330000);
             };
 
             recognition.start();
@@ -90,7 +90,7 @@ function OpenEndedQuestions() {
             clearInterval(intervalId); // Stop capturing frames
             webcamRef.current.stream.getTracks().forEach(track => track.stop()); // Stop the webcam stream
             if (recognition) recognition.stop(); // Stop speech recognition if it's defined
-        }, 66000); // Stop after 30 seconds
+        }, 330000); // Stop after 330 seconds
 
         startSpeechRecognition();
 

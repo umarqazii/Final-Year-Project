@@ -9,7 +9,8 @@ from dotenv import load_dotenv
 import joblib
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
-
+import pandas as pd
+import pickle
 
 app = Flask(__name__)
 CORS(app)
@@ -143,10 +144,10 @@ Note for Dani:
 - baaqi database mein store krnay k liye bhi pipeline tyaar hai. bus tu nay Model say 10 Yes/No values leni hain
 '''
 
-def populate_output_data():
-    output_data.clear()
-    # Load the trained model
-    model = joblib.load('anxiety_prediction_model.pkl')  # Replace 'model.pkl' with the path to your trained model file
+# def populate_output_data():
+#     output_data.clear()
+#     # Load the trained model
+#     model = joblib.load('anxiety_prediction_model.pkl')  # Replace 'model.pkl' with the path to your trained model file
     
     # Define the column transformer for one-hot encoding
     # categorical_cols = ['Emotion1', 'Emotion2', 'Emotion3', 'Emotion4', 'Emotion5', 'Emotion6', 'Emotion7', 'Emotion8', 'Emotion9', 'Emotion10', 'Sentiment']
@@ -167,11 +168,33 @@ def populate_output_data():
         
         # Append the prediction to the output data
         #output_data.append(prediction[0])  # Assuming prediction is a list with a single element
-    options = ["Yes", "No"]
-    for _ in range(10):  # Change the range to whatever length you desire
-        output_data.append(random.choice(options))
-    return output_data
+    # options = ["Yes", "No"]
+    # for _ in range(10):  # Change the range to whatever length you desire
+    #     output_data.append(random.choice(options))
+    # return output_data
         
+
+def make_predictions(input_data_list):
+    # Load the model from the pickle file
+    with open('model.pkl', 'rb') as file:
+        loaded_model = pickle.load(file)
+    
+    # List to store predictions
+    #predictions = []
+    output_data.clear()
+    
+    # Loop through each input data dictionary in the list
+    for input_data in input_data_list:
+        # Create a DataFrame from the single input data
+        input_df = pd.DataFrame([input_data])
+        
+        # Make a prediction using the loaded model
+        prediction = loaded_model.predict(input_df)
+        
+        # Append the prediction to the predictions list
+        output_data.append(prediction[0])
+    
+    return output_data
 
 
 
@@ -213,7 +236,7 @@ def anxiety_analysis():
     # Get the first 10 rows from the CSV file
     get_input_data()
 
-    output_data = populate_output_data()
+    output_data = make_predictions(input_data)
     print(output_data)
 
     result = analyze_output_data(output_data)

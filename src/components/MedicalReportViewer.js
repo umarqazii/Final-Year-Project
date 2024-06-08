@@ -123,7 +123,7 @@ function MedicalReportViewer({ medicalInfo }) {
       <h2>Medical Report</h2>
       {medicalInfo && (
         <div>
-          <p><b>Patient Name: {medicalInfo.patientName}</b></p>
+          <p><b>Patient Name: {medicalInfo.patientName.toUpperCase()}</b></p>
           <p>GAD Score: {medicalInfo.GADscore}</p>
           {/* Divide emotions array into groups of 15 */}
           {divideEmotionsByQuestion(medicalInfo.emotionsArray).map((questionEmotions, index) => (
